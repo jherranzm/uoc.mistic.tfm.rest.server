@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +27,7 @@ import restserverbasicmysql.restserver.config.FileStorageProperties;
 import restserverbasicmysql.restserver.error.CustomErrorType;
 import restserverbasicmysql.restserver.model.Factura;
 import restserverbasicmysql.restserver.model.Invoice;
+import restserverbasicmysql.restserver.model.ThreeParams;
 import restserverbasicmysql.restserver.model.UploadFactura;
 import restserverbasicmysql.restserver.repos.FacturaRepository;
 import restserverbasicmysql.restserver.repos.InvoiceRepository;
@@ -74,25 +76,13 @@ public class FacturaResource {
         return new ResponseEntity<Factura>(factura.get(), HttpStatus.OK);
     }
 
-//	@SuppressWarnings({ "rawtypes", "unchecked" })
-//	@RequestMapping(value = "/facturas", method = RequestMethod.POST)
-//    public ResponseEntity<?> postFactura(@RequestBody Factura factura) {
-//        logger.info("Subiendo la factura  [{}]", factura);
-//        Optional<Factura> optional = facturaRepository.findById(factura.getId());
-//        if (optional.isPresent()) {
-//            logger.error("Factura with id {} found!.", factura.getId());
-//            return new ResponseEntity(new CustomErrorType("Factura with id " + factura.getId()  + " found"), HttpStatus.FOUND);
-//        }
-//        Optional<Factura> optionalNumFactura = facturaRepository.findByNumFactura(factura.getNumFactura());
-//        if (optionalNumFactura.isPresent()) {
-//        		logger.error("Factura with numFactura {} found!.", factura.getNumFactura());
-//        		return new ResponseEntity(new CustomErrorType("Factura with numFactura " + factura.getNumFactura()  + " found"), HttpStatus.FOUND);
-//        }
-//        
-//        Factura novaFactura = facturaRepository.save(factura);
-//        logger.info("Guardando la factura  [{}]", novaFactura);
-//        return new ResponseEntity<Factura>(novaFactura, HttpStatus.OK);
-//    }
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping(value = "/facturas", method = RequestMethod.POST)
+    public ResponseEntity<?> postFactura(@RequestBody ThreeParams factura) {
+        logger.info("Subiendo la factura  [{}]", factura);
+        logger.info("Guardando la factura  [{}]", factura);
+        return new ResponseEntity<ThreeParams>(factura, HttpStatus.OK);
+    }
 
 	@RequestMapping(value = "/facturas/upload", method = RequestMethod.POST)
     public ResponseEntity<?> multiUploadFileModel(@ModelAttribute UploadFactura model) {
