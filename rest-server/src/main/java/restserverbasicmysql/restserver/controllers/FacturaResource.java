@@ -17,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,8 +25,10 @@ import org.springframework.web.multipart.MultipartFile;
 import restserverbasicmysql.restserver.config.FileStorageProperties;
 import restserverbasicmysql.restserver.error.CustomErrorType;
 import restserverbasicmysql.restserver.model.Factura;
+import restserverbasicmysql.restserver.model.Invoice;
 import restserverbasicmysql.restserver.model.UploadFactura;
 import restserverbasicmysql.restserver.repos.FacturaRepository;
+import restserverbasicmysql.restserver.repos.InvoiceRepository;
 
 @RestController
 public class FacturaResource {
@@ -44,6 +45,9 @@ public class FacturaResource {
 	
 	@Autowired
 	private FacturaRepository facturaRepository;
+	
+	@Autowired
+	private InvoiceRepository invoiceRepository;
 	
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -90,7 +94,6 @@ public class FacturaResource {
 //        return new ResponseEntity<Factura>(novaFactura, HttpStatus.OK);
 //    }
 
-	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/facturas/upload", method = RequestMethod.POST)
     public ResponseEntity<?> multiUploadFileModel(@ModelAttribute UploadFactura model) {
 
@@ -118,6 +121,12 @@ public class FacturaResource {
         			
         			logger.info("" + novaFactura.toString());
         			facturaRepository.flush();
+        			
+        			Invoice invoice = new Invoice(model.getNumFactura(), model.getNumFactura(), model.getNumFactura(), model.getNumFactura(), 0.0, 0.0, new java.sql.Date(0));
+        			logger.info("" + invoice.toString());
+        			Invoice newInvoice = invoiceRepository.save(invoice);
+        			invoiceRepository.flush();
+        			logger.info("" + newInvoice.toString());
 
             }
             //saveUploadedFiles(model.getNumFactura(), Arrays.asList(model.getFiles()));
