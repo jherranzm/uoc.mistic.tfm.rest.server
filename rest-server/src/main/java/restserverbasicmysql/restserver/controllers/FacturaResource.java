@@ -76,7 +76,6 @@ public class FacturaResource {
         return new ResponseEntity<Factura>(factura.get(), HttpStatus.OK);
     }
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/facturas", method = RequestMethod.POST)
     public ResponseEntity<?> postFactura(@RequestBody ThreeParams factura) {
         logger.info("Subiendo la factura  [{}]", factura);

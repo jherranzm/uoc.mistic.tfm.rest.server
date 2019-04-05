@@ -2,9 +2,14 @@ package restserverbasicmysql.restserver.model;
 
 public class ThreeParams {
     private String uidfactura;
+    private String invoicenumber;
     private String seller;
     private String total;
     private String data;
+    private String file;
+    private String iv;
+    private String key;
+    
     
     
     
@@ -13,6 +18,12 @@ public class ThreeParams {
 	}
 	public void setUidfactura(String uidfactura) {
 		this.uidfactura = uidfactura;
+	}
+	public String getInvoicenumber() {
+		return invoicenumber;
+	}
+	public void setInvoicenumber(String invoicenumber) {
+		this.invoicenumber = invoicenumber;
 	}
 	public String getSeller() {
 		return seller;
@@ -32,16 +43,35 @@ public class ThreeParams {
 	public void setData(String data) {
 		this.data = data;
 	}
-	
+	public String getFile() {
+		return file;
+	}
+	public void setFile(String file) {
+		this.file = file;
+	}
+	public String getIv() {
+		return iv;
+	}
+	public void setIv(String iv) {
+		this.iv = iv;
+	}
+	public String getKey() {
+		return key;
+	}
+	public void setKey(String key) {
+		this.key = key;
+	}
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("ThreeParams [uidfactura=").append(uidfactura).append(", seller=").append(seller)
-				.append(", total=").append(total).append(", data=").append(data).append("]");
+		builder.append("ThreeParams [uidfactura=").append(uidfactura).append(", invoicenumber=").append(invoicenumber)
+				.append(", seller=").append(seller).append(", total=").append(total).append(", data=").append(data)
+				.append(", file=").append(file).append(", iv=").append(iv).append(", key=").append(key).append("]");
 		return builder.toString();
 	}
     
     
-    //
     
+    
+	
 }
