@@ -79,8 +79,30 @@ public class FacturaResource {
 	@RequestMapping(value = "/facturas", method = RequestMethod.POST)
     public ResponseEntity<?> postFactura(@RequestBody ThreeParams factura) {
         logger.info("Subiendo la factura  [{}]", factura);
-        logger.info("Guardando la factura  [{}]", factura);
-        return new ResponseEntity<ThreeParams>(factura, HttpStatus.OK);
+        
+        Invoice invoice = new Invoice();
+        
+        invoice.setUid(factura.getUidfactura());
+
+        invoice.setTaxIdentificationNumber(factura.getSeller());
+        invoice.setCorporateName("");
+
+        invoice.setInvoiceNumber(factura.getInvoicenumber());
+        invoice.setInvoiceTotal(new Double(factura.getTotal()));
+        invoice.setTotalTaxOutputs(new Double(factura.getTotaltaxoutputs()));
+        
+        invoice.setIssueDate(factura.getData());
+        
+        invoice.setIv(factura.getIv());
+        invoice.setSimKey(factura.getKey());
+        
+        invoice.setSignedInvoice(factura.getFile());
+        
+        logger.info("Guardando la factura  [{}]", invoice);
+        Invoice newInvoice = invoiceRepository.save(invoice);
+        
+        logger.info("Guardada la factura  [{}]", newInvoice);
+        return new ResponseEntity<Invoice>(newInvoice, HttpStatus.OK);
     }
 
 	@RequestMapping(value = "/facturas/upload", method = RequestMethod.POST)
@@ -111,7 +133,14 @@ public class FacturaResource {
         			logger.info("" + novaFactura.toString());
         			facturaRepository.flush();
         			
-        			Invoice invoice = new Invoice(model.getNumFactura(), model.getNumFactura(), model.getNumFactura(), model.getNumFactura(), 0.0, 0.0, new java.sql.Date(0));
+        			Invoice invoice = new Invoice(
+        					model.getNumFactura(), 
+        					model.getNumFactura(), 
+        					model.getNumFactura(), 
+        					model.getNumFactura(), 
+        					0.0, 
+        					0.0, 
+        					model.getNumFactura());
         			logger.info("" + invoice.toString());
         			Invoice newInvoice = invoiceRepository.save(invoice);
         			invoiceRepository.flush();

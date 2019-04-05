@@ -43,8 +43,17 @@ public class Invoice {
     @Column(name = "totalTaxOutputs", columnDefinition="DOUBLE(15,4)")
     private Double totalTaxOutputs;
 
-    @Column(name = "issueDate", columnDefinition="DATE")
-    private java.sql.Date issueDate;
+    @Column(name = "issueDate", columnDefinition="VARCHAR(255)")
+    private String issueDate;
+    
+    @Column(name = "signedInvoice", columnDefinition="LONGTEXT")
+    private String signedInvoice;
+    
+    @Column(name = "iv", columnDefinition="LONGTEXT")
+    private String iv;
+    
+    @Column(name = "simKey", columnDefinition="LONGTEXT")
+    private String simKey;
 
     public Invoice(String uid
             , String taxIdentificationNumber
@@ -52,7 +61,7 @@ public class Invoice {
             , String invoiceNumber
             , Double invoiceTotal
             , Double totalTaxOutputs
-            , java.sql.Date issueDate) {
+            , String issueDate) {
         this.uid = uid;
         this.taxIdentificationNumber = taxIdentificationNumber;
         this.corporateName = corporateName;
@@ -62,7 +71,11 @@ public class Invoice {
         this.issueDate = issueDate;
     }
 
-    public String getUid() {
+    public Invoice() {
+		super();
+	}
+
+	public String getUid() {
         return uid;
     }
 
@@ -110,25 +123,50 @@ public class Invoice {
         this.totalTaxOutputs = totalTaxOutputs;
     }
 
-    public java.sql.Date getIssueDate() {
+    public String getIssueDate() {
         return issueDate;
     }
 
-    public void setIssueDate(java.sql.Date issueDate) {
+    public void setIssueDate(String issueDate) {
         this.issueDate = issueDate;
     }
 
-    @Override
-    public String toString() {
-        final StringBuffer sb = new StringBuffer("Invoice{");
-        sb.append("uid='").append(uid).append('\'');
-        sb.append(", taxIdentificationNumber='").append(taxIdentificationNumber).append('\'');
-        sb.append(", corporateName='").append(corporateName).append('\'');
-        sb.append(", invoiceNumber='").append(invoiceNumber).append('\'');
-        sb.append(", invoiceTotal=").append(invoiceTotal);
-        sb.append(", totalTaxOutputs=").append(totalTaxOutputs);
-        sb.append(", issueDate=").append(issueDate);
-        sb.append('}');
-        return sb.toString();
-    }
+    public String getSignedInvoice() {
+		return signedInvoice;
+	}
+
+	public void setSignedInvoice(String data) {
+		this.signedInvoice = data;
+	}
+
+	public String getIv() {
+		return iv;
+	}
+
+	public void setIv(String iv) {
+		this.iv = iv;
+	}
+
+	public String getSimKey() {
+		return simKey;
+	}
+
+	public void setSimKey(String simKey) {
+		this.simKey = simKey;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Invoice [id=").append(id).append(", uid=").append(uid).append(", taxIdentificationNumber=")
+				.append(taxIdentificationNumber).append(", corporateName=").append(corporateName)
+				.append(", invoiceNumber=").append(invoiceNumber).append(", invoiceTotal=").append(invoiceTotal)
+				.append(", totalTaxOutputs=").append(totalTaxOutputs).append(", issueDate=").append(issueDate)
+				.append(", signedInvoice=").append(signedInvoice).append(", iv=").append(iv).append(", simKey=")
+				.append(simKey).append("]");
+		return builder.toString();
+	}
+
+	
+	
 }

@@ -3,16 +3,14 @@ package restserverbasicmysql.restserver.model;
 public class ThreeParams {
     private String uidfactura;
     private String invoicenumber;
-    private String seller;
+    private String seller; // taxIdentificationNumber
     private String total;
+    private String totaltaxoutputs;
+    
     private String data;
     private String file;
     private String iv;
     private String key;
-    
-    
-    
-    
 	public String getUidfactura() {
 		return uidfactura;
 	}
@@ -36,6 +34,12 @@ public class ThreeParams {
 	}
 	public void setTotal(String total) {
 		this.total = total;
+	}
+	public String getTotaltaxoutputs() {
+		return totaltaxoutputs;
+	}
+	public void setTotaltaxoutputs(String totaltaxoutputs) {
+		this.totaltaxoutputs = totaltaxoutputs;
 	}
 	public String getData() {
 		return data;
@@ -64,14 +68,18 @@ public class ThreeParams {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("ThreeParams [uidfactura=").append(uidfactura).append(", invoicenumber=").append(invoicenumber)
-				.append(", seller=").append(seller).append(", total=").append(total).append(", data=").append(data)
-				.append(", file=").append(file).append(", iv=").append(iv).append(", key=").append(key).append("]");
+		builder.append("ThreeParams [uidfactura=").append(uidfactura)
+		.append(", invoicenumber=").append(invoicenumber)
+				.append(", seller=").append(seller)
+				.append(", total=").append(total)
+				.append(", totaltaxoutputs=").append(totaltaxoutputs)
+				.append(", data=").append(data)
+				.append(", file=").append(file)
+				.append(", iv=").append(iv)
+				.append(", key=").append(key).append("]");
 		return builder.toString();
 	}
     
-    
-    
-    
-	
+ 
+ 	
 }
