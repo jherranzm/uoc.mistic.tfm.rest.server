@@ -54,14 +54,14 @@ public class FacturaResource {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value="/facturas", method = RequestMethod.GET)
-	public ResponseEntity<List<Factura>> retrieveAllFacturas() {
-		List<Factura> facturas = facturaRepository.findAll();
+	public ResponseEntity<List<Invoice>> retrieveAllFacturas() {
+		List<Invoice> facturas = invoiceRepository.findAll();
         if (facturas.isEmpty()) {
         		logger.warn("Sin facturas!");
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
         logger.info("Se han recuperado [{}] facturas", facturas.size());
-        return new ResponseEntity<List<Factura>>(facturas, HttpStatus.OK);
+        return new ResponseEntity<List<Invoice>>(facturas, HttpStatus.OK);
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
