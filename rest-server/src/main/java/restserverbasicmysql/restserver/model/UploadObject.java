@@ -1,6 +1,7 @@
 package restserverbasicmysql.restserver.model;
 
-public class ThreeParams {
+public class UploadObject {
+	
     private String uidfactura;
     private String invoicenumber;
     private String seller; // taxIdentificationNumber
@@ -11,6 +12,10 @@ public class ThreeParams {
     private String file;
     private String iv;
     private String key;
+    
+    
+    
+    
 	public String getUidfactura() {
 		return uidfactura;
 	}

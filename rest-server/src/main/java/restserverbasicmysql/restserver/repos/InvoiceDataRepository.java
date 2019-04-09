@@ -10,4 +10,5 @@ import restserverbasicmysql.restserver.model.InvoiceData;
 @Repository
 public interface InvoiceDataRepository extends JpaRepository<InvoiceData, String> {
 	Optional<InvoiceData> findByF1(String f1);
+
 }

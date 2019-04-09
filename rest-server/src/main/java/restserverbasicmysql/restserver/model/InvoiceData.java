@@ -33,6 +33,9 @@ public class InvoiceData implements Serializable {
 	private Timestamp creationTime;
 
 	@Column(nullable=false, length=255, columnDefinition="VARCHAR(255)")
+	private String f1;
+
+	@Column(nullable=false, length=255, columnDefinition="VARCHAR(255)")
 	private String f2;
 
 	@Column(nullable=false, length=255, columnDefinition="VARCHAR(255)")
@@ -46,9 +49,6 @@ public class InvoiceData implements Serializable {
 	private double f6;
 
 	private double f7;
-
-	@Column(nullable=false, length=255, columnDefinition="VARCHAR(255)")
-	private String f1;
 
 	public InvoiceData() {
 	}
@@ -124,5 +124,17 @@ public class InvoiceData implements Serializable {
 	public void setF1(String f1) {
 		this.f1 = f1;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("InvoiceData [id=").append(id).append(", f1=").append(f1).append(", f2=").append(f2)
+				.append(", f3=").append(f3).append(", f4=").append(f4).append(", f5=").append(f5).append(", f6=")
+				.append(f6).append(", f7=").append(f7).append(", creationTime=").append(creationTime).append("]");
+		return builder.toString();
+	}
+	
+	
+	
 
 }

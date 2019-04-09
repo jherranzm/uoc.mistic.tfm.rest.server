@@ -1,10 +1,6 @@
 package restserverbasicmysql.restserver.controllers;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -23,13 +19,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import restserverbasicmysql.restserver.config.FileStorageProperties;
 import restserverbasicmysql.restserver.error.CustomErrorType;
+import restserverbasicmysql.restserver.model.BackUp;
 import restserverbasicmysql.restserver.model.Factura;
 import restserverbasicmysql.restserver.model.Invoice;
-import restserverbasicmysql.restserver.model.ThreeParams;
+import restserverbasicmysql.restserver.model.InvoiceData;
 import restserverbasicmysql.restserver.model.UploadFactura;
+import restserverbasicmysql.restserver.model.UploadObject;
+import restserverbasicmysql.restserver.repos.BackUpRepository;
 import restserverbasicmysql.restserver.repos.FacturaRepository;
+import restserverbasicmysql.restserver.repos.InvoiceDataRepository;
 import restserverbasicmysql.restserver.repos.InvoiceRepository;
 
 @RestController
@@ -37,19 +36,17 @@ public class FacturaResource {
 	
 	public static final Logger logger = LoggerFactory.getLogger(FacturaResource.class);
 	
-	private final Path fileStorageLocation;
-
-    @Autowired
-    public FacturaResource(FileStorageProperties fileStorageProperties) {
-        this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir())
-                .toAbsolutePath().normalize();
-    }
-	
 	@Autowired
 	private FacturaRepository facturaRepository;
 	
 	@Autowired
 	private InvoiceRepository invoiceRepository;
+	
+	@Autowired
+	private InvoiceDataRepository invoiceDataRepository;
+	
+	@Autowired
+	private BackUpRepository backUpRepository;
 	
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -77,7 +74,7 @@ public class FacturaResource {
     }
 
 	@RequestMapping(value = "/facturas", method = RequestMethod.POST)
-    public ResponseEntity<?> postFactura(@RequestBody ThreeParams factura) {
+    public ResponseEntity<?> postFactura(@RequestBody UploadObject factura) {
         logger.info("Subiendo la factura  [{}]", factura);
         
         Invoice invoice = new Invoice();
@@ -99,7 +96,55 @@ public class FacturaResource {
         invoice.setSignedInvoice(factura.getFile());
         
         logger.info("Guardando la factura  [{}]", invoice);
-        Invoice newInvoice = invoiceRepository.save(invoice);
+        Invoice newInvoice= new Invoice();
+        Optional<Invoice> existingInvoice = invoiceRepository.findByUid(invoice.getUid());
+        if(existingInvoice.isPresent()){
+        	// The invoice is already in the system...
+        	logger.info("La factura YA está en el sistema!  [{}]", existingInvoice.get());
+        	return new ResponseEntity<Invoice>(existingInvoice.get(), HttpStatus.CONFLICT);
+        }else {
+        	newInvoice = invoiceRepository.save(invoice);
+        	
+        	InvoiceData invoiceData = new InvoiceData();
+        	invoiceData.setF1(factura.getUidfactura());
+        	invoiceData.setF2(factura.getSeller());
+        	invoiceData.setF3("");
+        	invoiceData.setF4(factura.getInvoicenumber());
+        	
+        	invoiceData.setF5(new Double(factura.getTotal()));
+        	invoiceData.setF6(new Double(factura.getTotaltaxoutputs()));
+        	invoiceData.setF7(new Double(factura.getTotaltaxoutputs()));
+        	
+        	BackUp backUp = new BackUp();
+        	backUp.setF1(factura.getUidfactura());
+        	backUp.setI(factura.getIv());
+        	backUp.setK(factura.getKey());
+        	backUp.setF(factura.getFile());
+        	
+        	
+        	
+            Optional<InvoiceData> existingInvoiceData = invoiceDataRepository.findByF1(invoice.getUid());
+            if(existingInvoiceData.isPresent()){
+            	// The invoice is already in the system...
+            	logger.info("La factura YA está en el sistema!  [{}]", existingInvoiceData.get());
+            	//return new ResponseEntity<Invoice>(existingInvoice.get(), HttpStatus.CONFLICT);
+            }else {
+            	InvoiceData newInvoiceData = invoiceDataRepository.save(invoiceData);
+            	logger.info("Guardada los datos encriptados de la factura  [{}]", newInvoiceData);
+            }
+
+        	
+            Optional<BackUp> existingBackUp = backUpRepository.findByF1(invoice.getUid());
+            if(existingBackUp.isPresent()){
+            	// The invoice is already in the system...
+            	logger.info("La factura YA está en el sistema!  [{}]", existingBackUp.get());
+            	//return new ResponseEntity<Invoice>(existingInvoice.get(), HttpStatus.CONFLICT);
+            }else {
+            	BackUp newBackUp = backUpRepository.save(backUp);
+            	logger.info("Guardado backup encriptado de la factura  [{}]", newBackUp);
+            }
+            
+        }
         
         logger.info("Guardada la factura  [{}]", newInvoice);
         return new ResponseEntity<Invoice>(newInvoice, HttpStatus.OK);
@@ -155,33 +200,6 @@ public class FacturaResource {
         }
 
         return new ResponseEntity<Factura>(novaFactura, HttpStatus.OK);
-
-    }
-	
-	private void saveUploadedFiles(String numFactura, List<MultipartFile> files) throws IOException {
-
-		logger.info("saveUploadedFiles...");
-		logger.info("Number of files..." + files.size());
-		
-        for (MultipartFile file : files) {
-
-        		logger.info("" + file.getName());
-            if (file.isEmpty()) {
-                continue; //next pls
-            }
-
-            byte[] bytes = file.getBytes();
-            logger.info("" + fileStorageLocation + File.separator + numFactura + "_" + file.getOriginalFilename());
-            Path path = Paths.get(fileStorageLocation + File.separator + numFactura + "_" + file.getOriginalFilename());
-            Files.write(path, bytes);
-            File f = new File(path.toString());
-            if(f.exists()) {
-            		logger.info("EXISTE!! " + fileStorageLocation + File.separator + numFactura + "_" + file.getOriginalFilename());
-            }else {
-            		logger.warn("ERROR!! No existe " + fileStorageLocation + File.separator + numFactura + "_" + file.getOriginalFilename());
-            }
-
-        }
 
     }
 }
