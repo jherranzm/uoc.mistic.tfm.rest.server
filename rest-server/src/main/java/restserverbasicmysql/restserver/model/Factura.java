@@ -1,7 +1,5 @@
 package restserverbasicmysql.restserver.model;
 
-import static javax.persistence.FetchType.LAZY;
-
 import java.util.Arrays;
 import java.util.Date;
 
