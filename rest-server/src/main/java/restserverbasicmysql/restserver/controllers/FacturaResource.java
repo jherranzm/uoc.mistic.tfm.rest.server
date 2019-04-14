@@ -113,7 +113,7 @@ public class FacturaResource {
         	
         	invoiceData.setF5(new Double(factura.getTotal()));
         	invoiceData.setF6(new Double(factura.getTotaltaxoutputs()));
-        	invoiceData.setF7(new Double(factura.getTotaltaxoutputs()));
+        	invoiceData.setF7(new Double(factura.getTotalgrossamount()));
         	
         	BackUp backUp = new BackUp();
         	backUp.setF1(factura.getUidfactura());

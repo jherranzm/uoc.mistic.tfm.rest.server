@@ -153,6 +153,14 @@ public class BackUp implements Serializable {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("BackUp [id=").append(id).append(", f1=").append(f1).append(", i=").append(i).append(", k=")
+				.append(k).append(", f=").append(f).append(", creationTime=").append(creationTime).append("]");
+		return builder.toString();
+	}
 	
 	// 
 	

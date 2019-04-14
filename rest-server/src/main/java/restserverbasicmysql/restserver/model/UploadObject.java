@@ -1,15 +1,30 @@
 package restserverbasicmysql.restserver.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class UploadObject {
 	
     private String uidfactura;
-    private String invoicenumber;
-    private String seller; // taxIdentificationNumber
-    private String total;
-    private String totaltaxoutputs;
     
-    private String data;
+    @JsonProperty("invoice_number")
+    private String invoiceNumber;
+    
+    @JsonProperty("tax_identification_number")
+    private String taxIdentificationNumber;
+    
+    private String total;
+    
+    @JsonProperty("total_gross_amount")
+    private String totalGrossAmount;
+    
+    @JsonProperty("total_tax_outputs")
+    private String totalTaxOutputs;
+    
+    @JsonProperty("issue_data")
+    private String issueData;
+    
     private String file;
+    
     private String iv;
     private String key;
     
@@ -23,16 +38,16 @@ public class UploadObject {
 		this.uidfactura = uidfactura;
 	}
 	public String getInvoicenumber() {
-		return invoicenumber;
+		return invoiceNumber;
 	}
 	public void setInvoicenumber(String invoicenumber) {
-		this.invoicenumber = invoicenumber;
+		this.invoiceNumber = invoicenumber;
 	}
 	public String getSeller() {
-		return seller;
+		return taxIdentificationNumber;
 	}
 	public void setSeller(String seller) {
-		this.seller = seller;
+		this.taxIdentificationNumber = seller;
 	}
 	public String getTotal() {
 		return total;
@@ -40,17 +55,23 @@ public class UploadObject {
 	public void setTotal(String total) {
 		this.total = total;
 	}
+	public String getTotalgrossamount() {
+		return totalGrossAmount;
+	}
+	public void setTotalgrossamount(String totalgrossamount) {
+		this.totalGrossAmount = totalgrossamount;
+	}
 	public String getTotaltaxoutputs() {
-		return totaltaxoutputs;
+		return totalTaxOutputs;
 	}
 	public void setTotaltaxoutputs(String totaltaxoutputs) {
-		this.totaltaxoutputs = totaltaxoutputs;
+		this.totalTaxOutputs = totaltaxoutputs;
 	}
 	public String getData() {
-		return data;
+		return issueData;
 	}
 	public void setData(String data) {
-		this.data = data;
+		this.issueData = data;
 	}
 	public String getFile() {
 		return file;
@@ -73,12 +94,12 @@ public class UploadObject {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("ThreeParams [uidfactura=").append(uidfactura)
-		.append(", invoicenumber=").append(invoicenumber)
-				.append(", seller=").append(seller)
+		builder.append("UploadObject [UIDFactura=").append(uidfactura)
+		.append(", invoiceNumber=").append(invoiceNumber)
+				.append(", taxIdentificationNumber=").append(taxIdentificationNumber)
 				.append(", total=").append(total)
-				.append(", totaltaxoutputs=").append(totaltaxoutputs)
-				.append(", data=").append(data)
+				.append(", totalTaxOutputs=").append(totalTaxOutputs)
+				.append(", data=").append(issueData)
 				.append(", file=").append(file)
 				.append(", iv=").append(iv)
 				.append(", key=").append(key).append("]");
