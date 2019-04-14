@@ -2,7 +2,6 @@ package restserverbasicmysql.restserver;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.ThreadLocalRandom;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.http.HttpEntity;
@@ -51,7 +50,9 @@ public class TestPostWithFile {
 	private String generateRandomString(int count) {
 	    return RandomStringUtils.randomAlphanumeric(count);
 	}
+	/**
 	private int generateRandomInt() {
 	    return ThreadLocalRandom.current().nextInt(1, 1000 + 1);
 	}
+	*/
 }
