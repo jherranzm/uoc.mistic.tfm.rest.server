@@ -50,11 +50,14 @@ public class InvoiceData implements Serializable {
 
 	private double f7;
 
+	@Column(nullable=false, length=255, columnDefinition="VARCHAR(255)")
+	private String f8;
+
 	public InvoiceData() {
 	}
 
 	public Long getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setId(Long id) {
@@ -62,15 +65,23 @@ public class InvoiceData implements Serializable {
 	}
 
 	public Timestamp getCreationTime() {
-		return this.creationTime;
+		return creationTime;
 	}
 
 	public void setCreationTime(Timestamp creationTime) {
 		this.creationTime = creationTime;
 	}
 
+	public String getF1() {
+		return f1;
+	}
+
+	public void setF1(String f1) {
+		this.f1 = f1;
+	}
+
 	public String getF2() {
-		return this.f2;
+		return f2;
 	}
 
 	public void setF2(String f2) {
@@ -78,7 +89,7 @@ public class InvoiceData implements Serializable {
 	}
 
 	public String getF3() {
-		return this.f3;
+		return f3;
 	}
 
 	public void setF3(String f3) {
@@ -86,7 +97,7 @@ public class InvoiceData implements Serializable {
 	}
 
 	public String getF4() {
-		return this.f4;
+		return f4;
 	}
 
 	public void setF4(String f4) {
@@ -94,7 +105,7 @@ public class InvoiceData implements Serializable {
 	}
 
 	public double getF5() {
-		return this.f5;
+		return f5;
 	}
 
 	public void setF5(double f5) {
@@ -102,7 +113,7 @@ public class InvoiceData implements Serializable {
 	}
 
 	public double getF6() {
-		return this.f6;
+		return f6;
 	}
 
 	public void setF6(double f6) {
@@ -110,31 +121,32 @@ public class InvoiceData implements Serializable {
 	}
 
 	public double getF7() {
-		return this.f7;
+		return f7;
 	}
 
 	public void setF7(double f7) {
 		this.f7 = f7;
 	}
 
-	public String getF1() {
-		return this.f1;
+	public String getF8() {
+		return f8;
 	}
 
-	public void setF1(String f1) {
-		this.f1 = f1;
+	public void setF8(String f8) {
+		this.f8 = f8;
 	}
+	
+	
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("InvoiceData [id=").append(id).append(", f1=").append(f1).append(", f2=").append(f2)
-				.append(", f3=").append(f3).append(", f4=").append(f4).append(", f5=").append(f5).append(", f6=")
-				.append(f6).append(", f7=").append(f7).append(", creationTime=").append(creationTime).append("]");
+		builder.append("InvoiceData [\nid=").append(id).append(", \ncreationTime=").append(creationTime)
+				.append(", \nf1=").append(f1).append(", \nf2=").append(f2).append(", \nf3=").append(f3)
+				.append(", \nf4=").append(f4).append(", \nf5=").append(f5).append(", \nf6=").append(f6)
+				.append(", \nf7=").append(f7).append(", \nf8=").append(f8).append("\n]");
 		return builder.toString();
 	}
 	
 	
-	
-
 }

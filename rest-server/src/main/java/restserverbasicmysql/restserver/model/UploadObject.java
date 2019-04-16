@@ -67,10 +67,10 @@ public class UploadObject {
 	public void setTotaltaxoutputs(String totaltaxoutputs) {
 		this.totalTaxOutputs = totaltaxoutputs;
 	}
-	public String getData() {
+	public String getIssueData() {
 		return issueData;
 	}
-	public void setData(String data) {
+	public void setIssueData(String data) {
 		this.issueData = data;
 	}
 	public String getFile() {
