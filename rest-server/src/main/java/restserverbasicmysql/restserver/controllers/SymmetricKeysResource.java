@@ -8,11 +8,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import restserverbasicmysql.restserver.error.CustomErrorType;
 import restserverbasicmysql.restserver.model.SymmetricKey;
 import restserverbasicmysql.restserver.model.UploadKeyObject;
 import restserverbasicmysql.restserver.repos.SymmetricKeyRepository;
@@ -21,7 +23,6 @@ import restserverbasicmysql.restserver.repos.SymmetricKeyRepository;
 public class SymmetricKeysResource {
 	
 	public static final Logger logger = LoggerFactory.getLogger(SymmetricKeysResource.class);
-	
 	
 	@Autowired
 	private SymmetricKeyRepository symmetricKeyRepository;
@@ -37,7 +38,6 @@ public class SymmetricKeysResource {
         logger.info("Se han recuperado [{}] claves simétricas", symKeys.size());
         return new ResponseEntity<List<SymmetricKey>>(symKeys, HttpStatus.OK);
 	}
-	
 	
 	@RequestMapping(value = "/keys", method = RequestMethod.POST)
     public ResponseEntity<?> post(@RequestBody UploadKeyObject uploadObject) {
@@ -63,7 +63,6 @@ public class SymmetricKeysResource {
         return new ResponseEntity<SymmetricKey>(newSymKey, HttpStatus.OK);
     }
 
-
 	private SymmetricKey getKeysFromUploadObject(UploadKeyObject uploadObject) {
 		SymmetricKey newSymKey= new SymmetricKey();
 		
@@ -71,5 +70,18 @@ public class SymmetricKeysResource {
 		newSymKey.setK(uploadObject.getK());
 		return newSymKey;
 	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@RequestMapping(value = "/keys/{f}", method = RequestMethod.GET)
+    public ResponseEntity<?> getKey(@PathVariable("f") String f) {
+		
+        logger.info("Recuperando clave con id [{}]", f);
+        Optional<SymmetricKey> existingSymKey = symmetricKeyRepository.findByF(f);
+        if (!existingSymKey.isPresent()) {
+            logger.error("Factura con id {} NO encontrada.", f);
+            return new ResponseEntity(new CustomErrorType("Factura con id " + f  + " NO encontrada."), HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<SymmetricKey>(existingSymKey.get(), HttpStatus.OK);
+    }
 
 }

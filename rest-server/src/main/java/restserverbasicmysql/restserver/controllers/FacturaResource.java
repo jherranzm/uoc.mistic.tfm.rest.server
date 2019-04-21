@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import restserverbasicmysql.restserver.error.CustomErrorType;
 import restserverbasicmysql.restserver.model.BackUp;
-import restserverbasicmysql.restserver.model.Factura;
 import restserverbasicmysql.restserver.model.Invoice;
 import restserverbasicmysql.restserver.model.InvoiceData;
 import restserverbasicmysql.restserver.model.UploadObject;
@@ -60,12 +59,12 @@ public class FacturaResource {
     public ResponseEntity<?> getFactura(@PathVariable("id") long id) {
 		
         logger.info("Recuperando factura con id [{}]", id);
-        Optional<Factura> factura = facturaRepository.findById(id);
+        Optional<Invoice> factura = invoiceRepository.findById(id);
         if (!factura.isPresent()) {
             logger.error("Factura con id {} NO encontrada.", id);
             return new ResponseEntity(new CustomErrorType("Factura con id " + id  + " NO encontrada."), HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<Factura>(factura.get(), HttpStatus.OK);
+        return new ResponseEntity<Invoice>(factura.get(), HttpStatus.OK);
     }
 
 	@RequestMapping(value = "/facturas", method = RequestMethod.POST)

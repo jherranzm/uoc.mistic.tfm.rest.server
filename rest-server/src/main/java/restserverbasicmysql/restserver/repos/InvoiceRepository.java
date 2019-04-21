@@ -10,4 +10,5 @@ import restserverbasicmysql.restserver.model.Invoice;
 @Repository
 public interface InvoiceRepository extends JpaRepository<Invoice, String> {
 	Optional<Invoice> findByUid(String uid);
+	Optional<Invoice> findById(Long id);
 }
