@@ -21,7 +21,7 @@ import java.sql.Timestamp;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"creationTime"}, 
         allowGetters = true)
-public class Kkey implements Serializable {
+public class SymmetricKey implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -32,13 +32,13 @@ public class Kkey implements Serializable {
 	@Column(name="creation_time", nullable=false)
 	private Timestamp creationTime;
 
-	@Column(nullable=false, length=100)
+	@Column(name = "f", columnDefinition="VARCHAR(100)", nullable=false)
 	private String f;
 
-	@Column(nullable=false, length=100)
+	@Column(name = "k", columnDefinition="LONGTEXT", nullable=false)
 	private String k;
 
-	public Kkey() {
+	public SymmetricKey() {
 	}
 
 	public Long getId() {
@@ -72,5 +72,15 @@ public class Kkey implements Serializable {
 	public void setK(String k) {
 		this.k = k;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("SymmetricKey [\nid=").append(id).append(", \ncreationTime=").append(creationTime)
+				.append(", \nf=").append(f).append(", \nk=").append(k).append("\n]");
+		return builder.toString();
+	}
+	
+	
 
 }
