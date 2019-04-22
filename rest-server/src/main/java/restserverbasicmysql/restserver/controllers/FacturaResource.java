@@ -30,9 +30,6 @@ public class FacturaResource {
 	public static final Logger logger = LoggerFactory.getLogger(FacturaResource.class);
 	
 	@Autowired
-	private FacturaRepository facturaRepository;
-	
-	@Autowired
 	private InvoiceRepository invoiceRepository;
 	
 	@Autowired
