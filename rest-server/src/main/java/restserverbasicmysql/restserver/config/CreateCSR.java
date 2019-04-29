@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.math.BigInteger;
 import java.security.KeyStore;
 import java.security.PrivateKey;
@@ -23,6 +24,7 @@ import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.bouncycastle.cert.jcajce.JcaX509ExtensionUtils;
 import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder;
 import org.bouncycastle.openssl.PEMParser;
+import org.bouncycastle.openssl.jcajce.JcaPEMWriter;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.bouncycastle.pkcs.PKCS10CertificationRequest;
@@ -90,14 +92,14 @@ public class CreateCSR {
              X509Certificate signedCert = new JcaX509CertificateConverter().setProvider(BC).getCertificate
                     (certificateBuilder.build(signer));
             
-            System.out.println(signedCert.getSubjectDN().getName());
-            System.out.println(signedCert.getIssuerDN().getName());
+            StringWriter sw = new StringWriter();
+            JcaPEMWriter pemWriter = new JcaPEMWriter(sw);
+            pemWriter.writeObject(signedCert);
+            pemWriter.close();
             
-            System.out.println(signedCert);
+            System.out.println(sw.toString());
             
-            System.out.println("-----BEGIN CERTIFICATE-----\n" + Base64.getEncoder().encodeToString(signedCert.getEncoded()) + "\n-----END CERTIFICATE-----");
-            
-            return Base64.getEncoder().encodeToString(signedCert.getEncoded());
+            return Base64.getEncoder().encodeToString(sw.toString().getBytes());
 		}catch (Exception e) {
 			System.out.println("" + e.getClass().getCanonicalName() + " : " + e.getLocalizedMessage() + " : " + e.getMessage());
 			e.printStackTrace();
@@ -106,6 +108,7 @@ public class CreateCSR {
 		return null;
 		
 	}
+
 	static {
         Security.insertProviderAt(new org.bouncycastle.jce.provider.BouncyCastleProvider(), 1);
         // Works correctly with apache.santuario v1.5.8
