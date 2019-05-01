@@ -1,4 +1,4 @@
-package restserverbasicmysql.restserver.model;
+package restserverbasicmysql.restserver.vo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

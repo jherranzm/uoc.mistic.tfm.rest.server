@@ -29,43 +29,43 @@ import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.bouncycastle.pkcs.PKCS10CertificationRequest;
 import org.bouncycastle.pkcs.jcajce.JcaPKCS10CertificationRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.ResourceUtils;
 
 public class CreateCSR {
-
-	private static final String BC = "BC";
-	private static final String SHA256WITH_RSA = "SHA256withRSA";
-	private static final String P12_PASSWORD = "Th2S5p2rStr4ngP1ss";
-	private static final int MILLIS_PER_DAY = 24*60*60*1000;
+	
+	public static final Logger logger = LoggerFactory.getLogger(CreateCSR.class);
 
 	public static String getCertificateFromCSR(String csr) {
 		
 		try {
 			
 			
-			System.out.println("csr : " + csr);
+			logger.info("csr : " + csr);
 			
 			JcaPKCS10CertificationRequest jcaPKCS10CertificationRequest;
 
 			PEMParser pemParser = new PEMParser(new StringReader(csr));
 			Object parsedObj = pemParser.readObject();
 			pemParser.close();
-			System.out.println("PemParser returned: " + parsedObj);
+			logger.info("PemParser returned: " + parsedObj);
 			if (!(parsedObj instanceof PKCS10CertificationRequest)){
 				throw new Exception("No ha llegado un CSR correcto!");
 			}
 			jcaPKCS10CertificationRequest = new JcaPKCS10CertificationRequest((PKCS10CertificationRequest)parsedObj);
-			System.out.println("PublicKey : " + jcaPKCS10CertificationRequest.getPublicKey());
+			logger.info("PublicKey : " + jcaPKCS10CertificationRequest.getPublicKey());
 			
-			CertificateFactory certFactory = CertificateFactory.getInstance("X.509", BC);
+			CertificateFactory certFactory = CertificateFactory.getInstance("X.509", Configuration.SEC_PROVIDER);
 			
-			File fileCAP12 = new File("/Users/jherranzm/Dropbox/Jose_Luis/TFM_2019/PKI/CAkeystore.p12");
+			File fileCAP12 = ResourceUtils.getFile("classpath:keystore/CAkeystore.p12");
             InputStream isCAP12 = new FileInputStream(fileCAP12);
 			
 			KeyStore keystore = KeyStore.getInstance("PKCS12");
-			keystore.load(isCAP12, P12_PASSWORD.toCharArray());
-			PrivateKey key = (PrivateKey)keystore.getKey("ca", P12_PASSWORD.toCharArray());
+			keystore.load(isCAP12, Configuration.P12_PASSWORD.toCharArray());
+			PrivateKey key = (PrivateKey)keystore.getKey(Configuration.CA, Configuration.P12_PASSWORD.toCharArray());
 			
-			File fileCACrt = new File("/Users/jherranzm/Dropbox/Jose_Luis/TFM_2019/PKI/certs/CA.crt");
+			File fileCACrt = ResourceUtils.getFile("classpath:keystore/CA.crt");
             InputStream isCACrt = new FileInputStream(fileCACrt);
             
             X509Certificate caCert = (X509Certificate) certFactory.generateCertificate(isCACrt);
@@ -74,22 +74,38 @@ public class CreateCSR {
             String serialNo = "0001"; // a unique number
 
             Date issuedDate = new Date();
-            Date expiryDate = new Date(System.currentTimeMillis() + validity * MILLIS_PER_DAY); //MILLIS_PER_DAY=86400000l
-            //JcaPKCS10CertificationRequest jcaRequest = new JcaPKCS10CertificationRequest(csr);
+            Date expiryDate = new Date(System.currentTimeMillis() + validity * Configuration.MILLIS_PER_DAY); //MILLIS_PER_DAY=86400000l
             X509v3CertificateBuilder certificateBuilder = new JcaX509v3CertificateBuilder(caCert,
-                    new BigInteger(serialNo), issuedDate, expiryDate, jcaPKCS10CertificationRequest.getSubject(), jcaPKCS10CertificationRequest.getPublicKey());
+                    new BigInteger(serialNo), 
+                    issuedDate, 
+                    expiryDate, 
+                    jcaPKCS10CertificationRequest.getSubject(), 
+                    jcaPKCS10CertificationRequest.getPublicKey());
             JcaX509ExtensionUtils extUtils = new JcaX509ExtensionUtils();
-            certificateBuilder.addExtension(Extension.authorityKeyIdentifier, false,
-                    extUtils.createAuthorityKeyIdentifier(caCert))
-                    .addExtension(Extension.subjectKeyIdentifier, false, extUtils.createSubjectKeyIdentifier(jcaPKCS10CertificationRequest
-                            .getPublicKey()))
-                    .addExtension(Extension.basicConstraints, true, new BasicConstraints(0))
-                    .addExtension(Extension.keyUsage, true, new KeyUsage(KeyUsage.digitalSignature | KeyUsage
-                            .keyEncipherment))
-                    .addExtension(Extension.extendedKeyUsage, true, new ExtendedKeyUsage(KeyPurposeId.id_kp_serverAuth));
-            ContentSigner signer = new JcaContentSignerBuilder(SHA256WITH_RSA).setProvider(BC).build(key);
+            certificateBuilder
+            		.addExtension(
+            				Extension.authorityKeyIdentifier, 
+            				false,
+            				extUtils.createAuthorityKeyIdentifier(caCert))
+                    .addExtension(
+                    		Extension.subjectKeyIdentifier, 
+                    		false, 
+                    		extUtils.createSubjectKeyIdentifier(jcaPKCS10CertificationRequest.getPublicKey()))
+                    .addExtension(
+                    		Extension.basicConstraints, 
+                    		true, 
+                    		new BasicConstraints(0))
+                    .addExtension(
+                    		Extension.keyUsage, 
+                    		true, 
+                    		new KeyUsage(KeyUsage.digitalSignature | KeyUsage.keyEncipherment))
+                    .addExtension(
+                    		Extension.extendedKeyUsage, 
+                    		true, 
+                    		new ExtendedKeyUsage(KeyPurposeId.id_kp_serverAuth));
+            ContentSigner signer = new JcaContentSignerBuilder(Configuration.SHA256WITH_RSA).setProvider(Configuration.SEC_PROVIDER).build(key);
  
-             X509Certificate signedCert = new JcaX509CertificateConverter().setProvider(BC).getCertificate
+             X509Certificate signedCert = new JcaX509CertificateConverter().setProvider(Configuration.SEC_PROVIDER).getCertificate
                     (certificateBuilder.build(signer));
             
             StringWriter sw = new StringWriter();
@@ -97,11 +113,11 @@ public class CreateCSR {
             pemWriter.writeObject(signedCert);
             pemWriter.close();
             
-            System.out.println(sw.toString());
+            logger.info(sw.toString());
             
             return Base64.getEncoder().encodeToString(sw.toString().getBytes());
 		}catch (Exception e) {
-			System.out.println("" + e.getClass().getCanonicalName() + " : " + e.getLocalizedMessage() + " : " + e.getMessage());
+			logger.info("" + e.getClass().getCanonicalName() + " : " + e.getLocalizedMessage() + " : " + e.getMessage());
 			e.printStackTrace();
 		}
 		

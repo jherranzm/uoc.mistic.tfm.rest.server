@@ -18,10 +18,10 @@ import restserverbasicmysql.restserver.error.CustomErrorType;
 import restserverbasicmysql.restserver.model.BackUp;
 import restserverbasicmysql.restserver.model.Invoice;
 import restserverbasicmysql.restserver.model.InvoiceData;
-import restserverbasicmysql.restserver.model.UploadObject;
 import restserverbasicmysql.restserver.repos.BackUpRepository;
 import restserverbasicmysql.restserver.repos.InvoiceDataRepository;
 import restserverbasicmysql.restserver.repos.InvoiceRepository;
+import restserverbasicmysql.restserver.vo.UploadObject;
 
 @RestController
 public class FacturaResource {

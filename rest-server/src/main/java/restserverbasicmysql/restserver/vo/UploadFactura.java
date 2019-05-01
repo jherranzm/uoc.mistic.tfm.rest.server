@@ -1,4 +1,4 @@
-package restserverbasicmysql.restserver.model;
+package restserverbasicmysql.restserver.vo;
 
 import org.springframework.web.multipart.MultipartFile;
 

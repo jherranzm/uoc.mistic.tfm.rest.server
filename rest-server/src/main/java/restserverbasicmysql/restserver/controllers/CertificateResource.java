@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import restserverbasicmysql.restserver.config.CreateCSR;
-import restserverbasicmysql.restserver.model.UploadCSR;
+import restserverbasicmysql.restserver.vo.UploadCSR;
 
 @RestController
 public class CertificateResource {
@@ -23,12 +23,5 @@ public class CertificateResource {
         logger.info("CSR [{}]", uploadCSR.toString());
         return new ResponseEntity<String>(CreateCSR.getCertificateFromCSR(uploadCSR.getCsr()), HttpStatus.OK);
     }
-	
-	@RequestMapping(value = "/status", method = RequestMethod.GET)
-	public ResponseEntity<?> getStatus() {
-		
-		logger.info("Requesting status... [{}]", "");
-		return new ResponseEntity<String>("ACTIVE", HttpStatus.OK);
-	}
 
 }

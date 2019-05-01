@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import restserverbasicmysql.restserver.error.CustomErrorType;
 import restserverbasicmysql.restserver.model.SymmetricKey;
-import restserverbasicmysql.restserver.model.UploadKeyObject;
 import restserverbasicmysql.restserver.repos.SymmetricKeyRepository;
+import restserverbasicmysql.restserver.vo.UploadKeyObject;
 
 @RestController
 public class SymmetricKeysResource {

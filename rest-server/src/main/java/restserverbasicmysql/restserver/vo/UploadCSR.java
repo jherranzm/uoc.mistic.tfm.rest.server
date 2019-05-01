@@ -1,4 +1,4 @@
-package restserverbasicmysql.restserver.model;
+package restserverbasicmysql.restserver.vo;
 
 public class UploadCSR {
 	
