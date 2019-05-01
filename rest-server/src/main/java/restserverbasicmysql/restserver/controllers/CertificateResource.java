@@ -23,5 +23,12 @@ public class CertificateResource {
         logger.info("CSR [{}]", uploadCSR.toString());
         return new ResponseEntity<String>(CreateCSR.getCertificateFromCSR(uploadCSR.getCsr()), HttpStatus.OK);
     }
+	
+	@RequestMapping(value = "/status", method = RequestMethod.GET)
+	public ResponseEntity<?> getStatus() {
+		
+		logger.info("Requesting status... [{}]", "");
+		return new ResponseEntity<String>("ACTIVE", HttpStatus.OK);
+	}
 
 }
