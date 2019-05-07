@@ -3,7 +3,7 @@ package restserverbasicmysql.restserver.config;
 import org.springframework.context.annotation.PropertySource;
 
 @PropertySource("classpath:application.properties")
-public class Configuration {
+public class Constants {
 
 	public static final String SEC_PROVIDER = "BC";
 	public static final String SHA256WITH_RSA = "SHA256withRSA";

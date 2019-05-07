@@ -56,14 +56,14 @@ public class CreateCSR {
 			jcaPKCS10CertificationRequest = new JcaPKCS10CertificationRequest((PKCS10CertificationRequest)parsedObj);
 			logger.info("PublicKey : " + jcaPKCS10CertificationRequest.getPublicKey());
 			
-			CertificateFactory certFactory = CertificateFactory.getInstance("X.509", Configuration.SEC_PROVIDER);
+			CertificateFactory certFactory = CertificateFactory.getInstance("X.509", Constants.SEC_PROVIDER);
 			
 			File fileCAP12 = ResourceUtils.getFile("classpath:keystore/CAkeystore.p12");
             InputStream isCAP12 = new FileInputStream(fileCAP12);
 			
 			KeyStore keystore = KeyStore.getInstance("PKCS12");
-			keystore.load(isCAP12, Configuration.P12_PASSWORD.toCharArray());
-			PrivateKey key = (PrivateKey)keystore.getKey(Configuration.CA, Configuration.P12_PASSWORD.toCharArray());
+			keystore.load(isCAP12, Constants.P12_PASSWORD.toCharArray());
+			PrivateKey key = (PrivateKey)keystore.getKey(Constants.CA, Constants.P12_PASSWORD.toCharArray());
 			
 			File fileCACrt = ResourceUtils.getFile("classpath:keystore/CA.crt");
             InputStream isCACrt = new FileInputStream(fileCACrt);
@@ -74,7 +74,7 @@ public class CreateCSR {
             String serialNo = "0001"; // a unique number
 
             Date issuedDate = new Date();
-            Date expiryDate = new Date(System.currentTimeMillis() + validity * Configuration.MILLIS_PER_DAY); //MILLIS_PER_DAY=86400000l
+            Date expiryDate = new Date(System.currentTimeMillis() + validity * Constants.MILLIS_PER_DAY); //MILLIS_PER_DAY=86400000l
             X509v3CertificateBuilder certificateBuilder = new JcaX509v3CertificateBuilder(caCert,
                     new BigInteger(serialNo), 
                     issuedDate, 
@@ -103,9 +103,9 @@ public class CreateCSR {
                     		Extension.extendedKeyUsage, 
                     		true, 
                     		new ExtendedKeyUsage(KeyPurposeId.id_kp_serverAuth));
-            ContentSigner signer = new JcaContentSignerBuilder(Configuration.SHA256WITH_RSA).setProvider(Configuration.SEC_PROVIDER).build(key);
+            ContentSigner signer = new JcaContentSignerBuilder(Constants.SHA256WITH_RSA).setProvider(Constants.SEC_PROVIDER).build(key);
  
-             X509Certificate signedCert = new JcaX509CertificateConverter().setProvider(Configuration.SEC_PROVIDER).getCertificate
+             X509Certificate signedCert = new JcaX509CertificateConverter().setProvider(Constants.SEC_PROVIDER).getCertificate
                     (certificateBuilder.build(signer));
             
             StringWriter sw = new StringWriter();
