@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @XmlRootElement
 @Table(schema="tfm", name="tbl_role")
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value = {"creationTime"}, 
+@JsonIgnoreProperties(value = {"creationTime", "usuarios"}, 
         allowGetters = true)
 
 public class Role implements Serializable {
@@ -50,7 +50,6 @@ public class Role implements Serializable {
 		super();
 	}
 
-	//
 	public Long getId() {
 		return id;
 	}
@@ -59,20 +58,28 @@ public class Role implements Serializable {
 		this.id = id;
 	}
 
-	public String getNombre() {
+	public String getNom() {
 		return nom;
 	}
 
-	public void setNombre(String nombre) {
-		this.nom = nombre;
+	public void setNom(String nom) {
+		this.nom = nom;
 	}
 
-	public String getComentarios() {
+	public String getComentaris() {
 		return comentaris;
 	}
 
-	public void setComentarios(String comentarios) {
-		this.comentaris = comentarios;
+	public void setComentaris(String comentaris) {
+		this.comentaris = comentaris;
+	}
+
+	public Timestamp getCreationTime() {
+		return creationTime;
+	}
+
+	public void setCreationTime(Timestamp creationTime) {
+		this.creationTime = creationTime;
 	}
 
 	public Set<User> getUsuarios() {
@@ -82,7 +89,15 @@ public class Role implements Serializable {
 	public void setUsuarios(Set<User> usuarios) {
 		this.usuarios = usuarios;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Role [\nid=").append(id).append(", \nnom=").append(nom).append(", \ncomentaris=")
+				.append(comentaris).append(", \ncreationTime=").append(creationTime).append("\n]");
+		return builder.toString();
+	}
+
+	//
 	
 }

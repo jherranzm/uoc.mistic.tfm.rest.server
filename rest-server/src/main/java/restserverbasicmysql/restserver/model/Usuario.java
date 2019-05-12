@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -25,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @XmlRootElement
 @Table(schema = "tfm", name = "tbl_usuari")
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value = {"creationTime"}, 
+@JsonIgnoreProperties(value = {"creationTime", "numRoles", "roles"}, 
         allowGetters = true)
 
 public class Usuario implements Serializable, Comparable<Usuario> {
@@ -38,6 +39,9 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 
 	private String username;
 	private String pass;
+	
+	@Column(name="certificate", columnDefinition="LONGTEXT", nullable=true)
+	private String certificate;
 
 	private String email;
 	private boolean enabled;
@@ -52,6 +56,9 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	@JoinTable(name = "tbl_usuari_role", joinColumns = { @JoinColumn(name = "usuari_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "role_id") })
 	private Set<Role> roles;
+
+	@OneToMany(mappedBy="usuario")
+	private Set<Token> tokens;
 
 	@Transient
 	private long numRoles;
@@ -115,26 +122,48 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
+	
+	public String getPass() {
+		return pass;
+	}
+
+	public void setPass(String pass) {
+		this.pass = pass;
+	}
+
+	public String getCertificate() {
+		return certificate;
+	}
+
+	public void setCertificate(String certificate) {
+		this.certificate = certificate;
+	}
+
+	public String getComentaris() {
+		return comentaris;
+	}
+
+	public void setComentaris(String comentaris) {
+		this.comentaris = comentaris;
+	}
+
+	public Timestamp getCreationTime() {
+		return creationTime;
+	}
+
+	public void setCreationTime(Timestamp creationTime) {
+		this.creationTime = creationTime;
+	}
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Usuario [id=");
-		builder.append(id);
-		builder.append(", username=");
-		builder.append(username);
-		builder.append(", password=");
-		builder.append(pass);
-		builder.append(", email=");
-		builder.append(email);
-		builder.append(", enabled=");
-		builder.append(enabled);
-		builder.append(", roles=");
-		builder.append(roles);
-		builder.append(", comentarios=");
-		builder.append(comentaris);
-		builder.append("]");
-		return builder.toString();
+		StringBuilder builder2 = new StringBuilder();
+		builder2.append("Usuario [\nid=").append(id).append(", \nusername=").append(username).append(", \npass=")
+				.append(pass).append(", \ncertificate=").append(certificate).append(", \nemail=").append(email)
+				.append(", \nenabled=").append(enabled).append(", \ncomentaris=").append(comentaris)
+				.append(", \ncreationTime=").append(creationTime).append(", \nroles=").append(roles)
+				.append(", \nnumRoles=").append(numRoles).append("\n]");
+		return builder2.toString();
 	}
 
 	@Override
