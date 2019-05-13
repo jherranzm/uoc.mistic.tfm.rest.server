@@ -1,8 +1,10 @@
 package restserverbasicmysql.restserver.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -17,6 +19,11 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @EnableWebSecurity
 public class BasicConfiguration extends WebSecurityConfigurerAdapter {
 
+	
+	@Autowired
+	private UsuarioUserDetailsService uuds;
+	
+	
 	@Bean
 	public UserDetailsService userDetailsService() {
 
@@ -34,6 +41,21 @@ public class BasicConfiguration extends WebSecurityConfigurerAdapter {
 		return encoder;
 	}
 	
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth)
+			throws Exception {
+		auth
+		.userDetailsService(uuds)
+		.passwordEncoder(passwordEncoder())
+		.and()
+		.inMemoryAuthentication()
+		.withUser("admin").password(passwordEncoder().encode("admin"))
+		.roles("ADMIN", "USER")
+		.and()
+		.withUser("user").password(passwordEncoder().encode("user"))
+		.roles("USER")
+		;
+	}
 	
 	// Secure the endpoins with HTTP Basic authentication
     @Override
@@ -47,9 +69,12 @@ public class BasicConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 
                 .antMatchers("/status").permitAll()
-                .antMatchers("/login").permitAll()
+                //.antMatchers("/login").permitAll()
                 .antMatchers("/signup").permitAll()
                 .antMatchers("/token").permitAll()
+                
+                .antMatchers(HttpMethod.POST, "/login").hasRole("USER") // I/PostDataToUrlTask: Código de respuesta del servidor : [200]
+                //.antMatchers(HttpMethod.POST, "/login").hasRole("ADMIN") // I/PostDataToUrlTask: Código de respuesta del servidor : [403]
                 
                 .antMatchers(HttpMethod.GET, "/facturas/**").hasRole("USER")
                 .antMatchers(HttpMethod.POST, "/facturas").hasRole("USER")

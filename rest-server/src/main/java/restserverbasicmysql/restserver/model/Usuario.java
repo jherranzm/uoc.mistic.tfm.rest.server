@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -52,9 +53,15 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	@Column(name="creation_time", nullable=false)
 	private Timestamp creationTime;
 
-	@ManyToMany
-	@JoinTable(name = "tbl_usuari_role", joinColumns = { @JoinColumn(name = "usuari_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "role_id") })
+	/**
+	 * (fetch = FetchType.EAGER) Otherwise it does not retrieve ROLES
+	 */
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(
+			name = "tbl_usuari_role", 
+			joinColumns = { @JoinColumn(name = "usuari_id") }, 
+			inverseJoinColumns = { @JoinColumn(name = "role_id") }
+			)
 	private Set<Role> roles;
 
 	@OneToMany(mappedBy="usuario")

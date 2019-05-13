@@ -43,7 +43,7 @@ public class Role implements Serializable {
 	private Timestamp creationTime;
 	
 	@ManyToMany(mappedBy = "roles")
-	private Set<User> usuarios;
+	private Set<Usuario> usuarios;
 	
 	//
 	public Role() {
@@ -82,13 +82,6 @@ public class Role implements Serializable {
 		this.creationTime = creationTime;
 	}
 
-	public Set<User> getUsuarios() {
-		return usuarios;
-	}
-
-	public void setUsuarios(Set<User> usuarios) {
-		this.usuarios = usuarios;
-	}
 
 	@Override
 	public String toString() {
