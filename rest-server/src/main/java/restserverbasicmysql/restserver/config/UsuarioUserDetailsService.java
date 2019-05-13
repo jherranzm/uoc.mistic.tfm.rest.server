@@ -49,7 +49,7 @@ public class UsuarioUserDetailsService implements UserDetailsService {
 		try {
 			logger.info(String.format("Localizado el usuario [%s][%d]...", usuario.toString(), usuario.getRoles().size()));
 			for(Role role : usuario.getRoles()) {
-				logger.info(String.format("Rol del usuario [%s]... [%s]", usuario.toString(), role));
+				logger.info(String.format("Rol del usuario [%s]... [%s]", usuario.getEmail(), role));
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
