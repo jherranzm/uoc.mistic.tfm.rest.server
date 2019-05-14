@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @Entity
 @XmlRootElement
-@Table(name="users")
+@Table(schema = "tfm", name="tbl_users")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"creationTime"}, 
         allowGetters = true)

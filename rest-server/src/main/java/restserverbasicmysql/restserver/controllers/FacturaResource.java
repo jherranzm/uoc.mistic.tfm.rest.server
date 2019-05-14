@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import restserverbasicmysql.restserver.error.CustomErrorType;
 import restserverbasicmysql.restserver.model.BackUp;
+import restserverbasicmysql.restserver.model.CustomUser;
 import restserverbasicmysql.restserver.model.Invoice;
 import restserverbasicmysql.restserver.model.InvoiceData;
 import restserverbasicmysql.restserver.repos.BackUpRepository;
@@ -64,10 +66,11 @@ public class FacturaResource {
     }
 
 	@RequestMapping(value = "/facturas", method = RequestMethod.POST)
-    public ResponseEntity<?> postFactura(@RequestBody UploadObject factura) {
+    public ResponseEntity<?> postFactura(@AuthenticationPrincipal CustomUser user, @RequestBody UploadObject factura) {
 
 		logger.info("Objeto recibido:  [{}]", factura);
         Invoice invoice = getInvoiceFromUploadObject(factura);
+        invoice.setUsuario(user.getUsuario());
         
         logger.info("Guardando la factura  [{}]", invoice);
         Invoice newInvoice= new Invoice();
@@ -80,8 +83,10 @@ public class FacturaResource {
         	newInvoice = invoiceRepository.save(invoice);
         	
         	InvoiceData invoiceData = getInvoiceDataFromUploadObject(factura);
+        	invoiceData.setUsuario(user.getUsuario());
         	
         	BackUp backUp = getBackUpFromUploadObject(factura);
+        	backUp.setUsuario(user.getUsuario());
         	
             Optional<InvoiceData> existingInvoiceData = invoiceDataRepository.findByF1(invoice.getUid());
             if(existingInvoiceData.isPresent()){

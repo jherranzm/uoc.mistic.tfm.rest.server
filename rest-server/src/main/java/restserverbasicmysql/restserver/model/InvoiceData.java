@@ -10,38 +10,40 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.sql.Timestamp;
 
-
 /**
  * The persistent class for the invoice_data database table.
  * 
  */
 @Entity
 @XmlRootElement
-@Table(name="invoice_data")
+@Table(schema = "tfm", name = "tbl_invoice_data")
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value = {"creationTime"}, 
-        allowGetters = true)
+@JsonIgnoreProperties(value = { "creationTime" }, allowGetters = true)
 public class InvoiceData implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(unique=true, nullable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(unique = true, nullable = false)
 	private Long id;
 
-	@Column(name="creation_time", nullable=false)
+	@ManyToOne
+	@JoinColumn(name = "usuari_id", nullable = false)
+	private Usuario usuario;
+
+	@Column(name = "creation_time", nullable = false)
 	private Timestamp creationTime;
 
-	@Column(nullable=false, length=255, columnDefinition="VARCHAR(255)")
+	@Column(nullable = false, length = 255, columnDefinition = "VARCHAR(255)")
 	private String f1;
 
-	@Column(nullable=false, length=255, columnDefinition="VARCHAR(255)")
+	@Column(nullable = false, length = 255, columnDefinition = "VARCHAR(255)")
 	private String f2;
 
-	@Column(nullable=false, length=255, columnDefinition="VARCHAR(255)")
+	@Column(nullable = false, length = 255, columnDefinition = "VARCHAR(255)")
 	private String f3;
 
-	@Column(nullable=false, length=255, columnDefinition="VARCHAR(255)")
+	@Column(nullable = false, length = 255, columnDefinition = "VARCHAR(255)")
 	private String f4;
 
 	private double f5;
@@ -50,7 +52,7 @@ public class InvoiceData implements Serializable {
 
 	private double f7;
 
-	@Column(nullable=false, length=255, columnDefinition="VARCHAR(255)")
+	@Column(nullable = false, length = 255, columnDefinition = "VARCHAR(255)")
 	private String f8;
 
 	public InvoiceData() {
@@ -62,6 +64,14 @@ public class InvoiceData implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	public Timestamp getCreationTime() {
@@ -135,18 +145,15 @@ public class InvoiceData implements Serializable {
 	public void setF8(String f8) {
 		this.f8 = f8;
 	}
-	
-	
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("InvoiceData [\nid=").append(id).append(", \ncreationTime=").append(creationTime)
-				.append(", \nf1=").append(f1).append(", \nf2=").append(f2).append(", \nf3=").append(f3)
-				.append(", \nf4=").append(f4).append(", \nf5=").append(f5).append(", \nf6=").append(f6)
-				.append(", \nf7=").append(f7).append(", \nf8=").append(f8).append("\n]");
+		builder.append("InvoiceData [\nid=").append(id).append(", \nusuario=").append(usuario.getEmail())
+				.append(", \ncreationTime=").append(creationTime).append(", \nf1=").append(f1).append(", \nf2=")
+				.append(f2).append(", \nf3=").append(f3).append(", \nf4=").append(f4).append(", \nf5=").append(f5)
+				.append(", \nf6=").append(f6).append(", \nf7=").append(f7).append(", \nf8=").append(f8).append("\n]");
 		return builder.toString();
 	}
-	
-	
+
 }

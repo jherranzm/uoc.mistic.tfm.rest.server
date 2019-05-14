@@ -10,32 +10,34 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.sql.Timestamp;
 
-
 /**
  * The persistent class for the kkeys database table.
  * 
  */
 @Entity
 @XmlRootElement
-@Table(name="kkeys")
+@Table(schema = "tfm", name = "tbl_kkeys")
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value = {"creationTime"}, 
-        allowGetters = true)
+@JsonIgnoreProperties(value = { "creationTime" }, allowGetters = true)
 public class SymmetricKey implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(unique=true, nullable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(unique = true, nullable = false)
 	private Long id;
 
-	@Column(name="creation_time", nullable=false)
+	@ManyToOne
+	@JoinColumn(name = "usuari_id", nullable = false)
+	private Usuario usuario;
+
+	@Column(name = "creation_time", nullable = false)
 	private Timestamp creationTime;
 
-	@Column(name = "f", columnDefinition="VARCHAR(100)", nullable=false)
+	@Column(name = "f", columnDefinition = "VARCHAR(100)", nullable = false)
 	private String f;
 
-	@Column(name = "k", columnDefinition="LONGTEXT", nullable=false)
+	@Column(name = "k", columnDefinition = "LONGTEXT", nullable = false)
 	private String k;
 
 	public SymmetricKey() {
@@ -47,6 +49,14 @@ public class SymmetricKey implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	public Timestamp getCreationTime() {
@@ -80,7 +90,5 @@ public class SymmetricKey implements Serializable {
 				.append(", \nf=").append(f).append(", \nk=").append(k).append("\n]");
 		return builder.toString();
 	}
-	
-	
 
 }

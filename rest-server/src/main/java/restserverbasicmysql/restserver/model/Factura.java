@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @XmlRootElement
-@Table(name="factura")
+@Table(schema = "tfm", name="tbl_factura")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"dataCreacio"}, 
         allowGetters = true)

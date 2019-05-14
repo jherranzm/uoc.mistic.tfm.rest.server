@@ -6,6 +6,8 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -15,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @XmlRootElement
-@Table(name="invoice")
+@Table(schema = "tfm", name="tbl_invoice")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"dataCreacio"}, 
         allowGetters = true)
@@ -24,6 +26,10 @@ public class Invoice {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@ManyToOne
+	@JoinColumn(name = "usuari_id", nullable = false)
+	private Usuario usuario;
 
     @Column(name = "uid", columnDefinition="VARCHAR(255)")
     private String uid;
@@ -81,6 +87,14 @@ public class Invoice {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	public String getUid() {

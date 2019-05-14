@@ -10,42 +10,43 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.sql.Timestamp;
 
-
 /**
  * The persistent class for the backUp database table.
  * 
  */
 @Entity
 @XmlRootElement
-@Table(name="back_up")
+@Table(schema = "tfm", name = "tbl_back_up")
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value = {"creationTime"}, 
-        allowGetters = true)
+@JsonIgnoreProperties(value = { "creationTime" }, allowGetters = true)
 public class BackUp implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(unique=true, nullable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(unique = true, nullable = false)
 	private Long id;
 
-	@Column(name="creation_time", nullable=false)
+	@ManyToOne
+	@JoinColumn(name = "usuari_id", nullable = false)
+	private Usuario usuario;
+
+	@Column(name = "creation_time", nullable = false)
 	private Timestamp creationTime;
 
 	@Lob
-	@Column(nullable=false, columnDefinition="LONGTEXT")
+	@Column(nullable = false, columnDefinition = "LONGTEXT")
 	private String f;
 
 	@Lob
-	@Column(nullable=false, columnDefinition="LONGTEXT")
+	@Column(nullable = false, columnDefinition = "LONGTEXT")
 	private String i;
 
 	@Lob
-	@Column(nullable=false, columnDefinition="LONGTEXT")
+	@Column(nullable = false, columnDefinition = "LONGTEXT")
 	private String k;
 
-
-	@Column(nullable=false, length=255)
+	@Column(nullable = false, length = 255)
 	private String f1;
 
 	public BackUp() {
@@ -57,6 +58,14 @@ public class BackUp implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	public Timestamp getCreationTime() {
@@ -100,70 +109,14 @@ public class BackUp implements Serializable {
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((creationTime == null) ? 0 : creationTime.hashCode());
-		result = prime * result + ((f == null) ? 0 : f.hashCode());
-		result = prime * result + ((f1 == null) ? 0 : f1.hashCode());
-		result = prime * result + ((i == null) ? 0 : i.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((k == null) ? 0 : k.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		BackUp other = (BackUp) obj;
-		if (creationTime == null) {
-			if (other.creationTime != null)
-				return false;
-		} else if (!creationTime.equals(other.creationTime))
-			return false;
-		if (f == null) {
-			if (other.f != null)
-				return false;
-		} else if (!f.equals(other.f))
-			return false;
-		if (f1 == null) {
-			if (other.f1 != null)
-				return false;
-		} else if (!f1.equals(other.f1))
-			return false;
-		if (i == null) {
-			if (other.i != null)
-				return false;
-		} else if (!i.equals(other.i))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (k == null) {
-			if (other.k != null)
-				return false;
-		} else if (!k.equals(other.k))
-			return false;
-		return true;
-	}
-
-	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("BackUp [id=").append(id).append(", f1=").append(f1).append(", i=").append(i).append(", k=")
-				.append(k).append(", f=").append(f).append(", creationTime=").append(creationTime).append("]");
+		builder.append("BackUp [\nid=").append(id).append(", \nusuario=").append(usuario.getEmail()).append(", \ncreationTime=")
+				.append(creationTime).append(", \nf=").append(f).append(", \ni=").append(i).append(", \nk=").append(k)
+				.append(", \nf1=").append(f1).append("\n]");
 		return builder.toString();
 	}
-	
-	// 
-	
-	
+
+	//
 
 }
