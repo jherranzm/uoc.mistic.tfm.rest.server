@@ -1,5 +1,6 @@
 package restserverbasicmysql.restserver.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,8 +43,11 @@ public class FacturaResource {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value="/facturas", method = RequestMethod.GET)
-	public ResponseEntity<List<Invoice>> retrieveAllFacturas() {
-		List<Invoice> facturas = invoiceRepository.findAll();
+	public ResponseEntity<List<Invoice>> retrieveAllFacturas(@AuthenticationPrincipal CustomUser user) {
+		List<Invoice> facturas = new ArrayList<Invoice>();
+		
+		logger.info("Recuperado las facturas del usuario [{}]", user.getUsuario().getEmail());
+		facturas = invoiceRepository.findAllByUsuario(user.getUsuario());
         if (facturas.isEmpty()) {
         		logger.warn("Sin facturas!");
             return new ResponseEntity(HttpStatus.NO_CONTENT);
@@ -54,10 +58,10 @@ public class FacturaResource {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/facturas/{id}", method = RequestMethod.GET)
-    public ResponseEntity<?> getFactura(@PathVariable("id") long id) {
+    public ResponseEntity<?> getFactura(@AuthenticationPrincipal CustomUser user, @PathVariable("id") long id) {
 		
-        logger.info("Recuperando factura con id [{}]", id);
-        Optional<Invoice> factura = invoiceRepository.findById(id);
+        logger.info("Recuperando factura con id [{}] del usuario [{}]", id, user.getUsuario().getEmail());
+        Optional<Invoice> factura = invoiceRepository.findByIdByUsuario(id, user.getUsuario());
         if (!factura.isPresent()) {
             logger.error("Factura con id {} NO encontrada.", id);
             return new ResponseEntity(new CustomErrorType("Factura con id " + id  + " NO encontrada."), HttpStatus.NOT_FOUND);
