@@ -47,16 +47,16 @@ public class UsuarioUserDetailsService implements UserDetailsService {
 		//logger.info(String.format("Localizado el usuario [%s]...", usuario.toString()));
 		
 		try {
-			logger.info(String.format("Localizado el usuario [%s][%d]...", usuario.toString(), usuario.getRoles().size()));
+			logger.info(String.format("Localizado el usuario [%s][%d]...", usuario.getEmail(), usuario.getRoles().size()));
 			for(Role role : usuario.getRoles()) {
-				logger.info(String.format("Rol del usuario [%s]... [%s]", usuario.getEmail(), role));
+				logger.info(String.format("Rol del usuario [%s]... [%s]", usuario.getEmail(), role.getNom()));
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		boolean enabled = true;
+		boolean enabled = usuario.isEnabled();
 		boolean accountNonExpired = true;
 		boolean credentialsNonExpired = true;
 		boolean accountNonLocked = true;
@@ -77,7 +77,6 @@ public class UsuarioUserDetailsService implements UserDetailsService {
 	private Collection<? extends GrantedAuthority> getAuthorities(Set<Role> roles) {
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		for (Role role : roles) {
-			logger.info(role);
 			authorities.add(new SimpleGrantedAuthority(role.getNom()));
 		}
 		return authorities;

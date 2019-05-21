@@ -97,13 +97,13 @@ public class BasicConfiguration extends WebSecurityConfigurerAdapter {
 		auth
 		.userDetailsService(uuds)
 		.passwordEncoder(passwordEncoder())
-		.and()
-		.inMemoryAuthentication()
-		.withUser("admin").password(passwordEncoder().encode("admin"))
-		.roles("ADMIN", "USER")
-		.and()
-		.withUser("user").password(passwordEncoder().encode("user"))
-		.roles("USER")
+//		.and()
+//		.inMemoryAuthentication()
+//		.withUser("admin").password(passwordEncoder().encode("admin"))
+//		.roles("ADMIN", "USER")
+//		.and()
+//		.withUser("user").password(passwordEncoder().encode("user"))
+//		.roles("USER")
 		;
 	}
 	

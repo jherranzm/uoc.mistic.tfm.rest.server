@@ -44,6 +44,9 @@ public class FacturaResource {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value="/facturas", method = RequestMethod.GET)
 	public ResponseEntity<List<Invoice>> retrieveAllFacturas(@AuthenticationPrincipal CustomUser user) {
+		
+		logger.info("Usuario [{}]", user.toString());
+		
 		List<Invoice> facturas = new ArrayList<Invoice>();
 		
 		logger.info("Recuperado las facturas del usuario [{}]", user.getUsuario().getEmail());
@@ -60,6 +63,8 @@ public class FacturaResource {
 	@RequestMapping(value = "/facturas/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> getFactura(@AuthenticationPrincipal CustomUser user, @PathVariable("id") long id) {
 		
+		logger.info("Usuario [{}]", user.toString());
+		
         logger.info("Recuperando factura con id [{}] del usuario [{}]", id, user.getUsuario().getEmail());
         Optional<Invoice> factura = invoiceRepository.findByIdByUsuario(id, user.getUsuario());
         if (!factura.isPresent()) {
@@ -71,6 +76,8 @@ public class FacturaResource {
 
 	@RequestMapping(value = "/facturas", method = RequestMethod.POST)
     public ResponseEntity<?> postFactura(@AuthenticationPrincipal CustomUser user, @RequestBody UploadObject factura) {
+		
+		logger.info("Usuario [{}]", user.toString());
 
 		logger.info("Objeto recibido:  [{}]", factura);
         Invoice invoice = getInvoiceFromUploadObject(factura);

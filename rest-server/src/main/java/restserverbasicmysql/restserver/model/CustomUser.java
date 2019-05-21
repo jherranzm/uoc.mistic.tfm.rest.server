@@ -58,4 +58,13 @@ public class CustomUser implements UserDetails {
 		return user.isEnabled();
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("CustomUser [\nusuario=").append(usuario).append(", \nuser=").append(user).append("\n]");
+		return builder.toString();
+	}
+	
+	
+
 }

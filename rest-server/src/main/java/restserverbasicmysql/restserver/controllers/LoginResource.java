@@ -22,9 +22,13 @@ public class LoginResource {
 	public static final Logger logger = LoggerFactory.getLogger(LoginResource.class);
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<Map<String, Object>> login(@AuthenticationPrincipal CustomUser user, @RequestBody UserPasswordObject userPasswordObject) {
+    public ResponseEntity<Map<String, Object>> login(
+    		@AuthenticationPrincipal CustomUser user, 
+    		@RequestBody UserPasswordObject userPasswordObject) {
 		
-		Map<String, Object> json = new HashMap<String, Object>();
+		logger.info("Usuario [{}]", user.toString());
+		
+		Map<String, Object> jsonResponse = new HashMap<String, Object>();
 		
 		logger.info("Received [{}]", userPasswordObject.toString());
 		
@@ -41,16 +45,16 @@ public class LoginResource {
 				) {
 			
 			
-			json.put("responseCode", HttpStatus.OK.value());
-			json.put("message", "User logged!");
+			jsonResponse.put("responseCode", HttpStatus.OK.value());
+			jsonResponse.put("message", "User logged!");
 			
-			new ResponseEntity<Map<String, Object>>(json, HttpStatus.OK);
+			new ResponseEntity<Map<String, Object>>(jsonResponse, HttpStatus.OK);
 		}else {
-			json.put("responseCode", HttpStatus.CONFLICT.value());
-			json.put("message", "User NOT active in MISTIC Invoice App");
+			jsonResponse.put("responseCode", HttpStatus.CONFLICT.value());
+			jsonResponse.put("message", "User NOT active in MISTIC Invoice App");
 		}
 		
-        return new ResponseEntity<Map<String, Object>>(json, HttpStatus.OK);
+        return new ResponseEntity<Map<String, Object>>(jsonResponse, HttpStatus.OK);
     }
 
 }
