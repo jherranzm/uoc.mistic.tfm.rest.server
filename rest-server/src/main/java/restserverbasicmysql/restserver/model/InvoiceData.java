@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.sql.Timestamp;
@@ -18,7 +19,7 @@ import java.sql.Timestamp;
 @XmlRootElement
 @Table(schema = "tfm", name = "tbl_invoice_data")
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value = { "creationTime" }, allowGetters = true)
+@JsonIgnoreProperties(value = { "creationTime", "usuari_id" }, allowGetters = true)
 public class InvoiceData implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -29,6 +30,7 @@ public class InvoiceData implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "usuari_id", nullable = false)
+	@JsonIgnore
 	private Usuario usuario;
 
 	@Column(name = "creation_time", nullable = false)
@@ -46,11 +48,14 @@ public class InvoiceData implements Serializable {
 	@Column(nullable = false, length = 255, columnDefinition = "VARCHAR(255)")
 	private String f4;
 
-	private double f5;
+	@Column(nullable = false, length = 255, columnDefinition = "VARCHAR(255)")
+	private String f5;
 
-	private double f6;
+	@Column(nullable = false, length = 255, columnDefinition = "VARCHAR(255)")
+	private String f6;
 
-	private double f7;
+	@Column(nullable = false, length = 255, columnDefinition = "VARCHAR(255)")
+	private String f7;
 
 	@Column(nullable = false, length = 255, columnDefinition = "VARCHAR(255)")
 	private String f8;
@@ -114,27 +119,27 @@ public class InvoiceData implements Serializable {
 		this.f4 = f4;
 	}
 
-	public double getF5() {
+	public String getF5() {
 		return f5;
 	}
 
-	public void setF5(double f5) {
+	public void setF5(String f5) {
 		this.f5 = f5;
 	}
 
-	public double getF6() {
+	public String getF6() {
 		return f6;
 	}
 
-	public void setF6(double f6) {
+	public void setF6(String f6) {
 		this.f6 = f6;
 	}
 
-	public double getF7() {
+	public String getF7() {
 		return f7;
 	}
 
-	public void setF7(double f7) {
+	public void setF7(String f7) {
 		this.f7 = f7;
 	}
 
@@ -149,11 +154,13 @@ public class InvoiceData implements Serializable {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("InvoiceData [\nid=").append(id).append(", \nusuario=").append(usuario.getEmail())
+		builder.append("InvoiceData [\nid=").append(id).append(", \nusuario=").append(usuario)
 				.append(", \ncreationTime=").append(creationTime).append(", \nf1=").append(f1).append(", \nf2=")
 				.append(f2).append(", \nf3=").append(f3).append(", \nf4=").append(f4).append(", \nf5=").append(f5)
 				.append(", \nf6=").append(f6).append(", \nf7=").append(f7).append(", \nf8=").append(f8).append("\n]");
 		return builder.toString();
 	}
+	
+	
 
 }

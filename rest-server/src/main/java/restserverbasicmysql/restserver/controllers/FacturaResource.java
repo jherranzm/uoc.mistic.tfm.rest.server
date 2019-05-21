@@ -131,8 +131,8 @@ public class FacturaResource {
         invoice.setCorporateName("");
 
         invoice.setInvoiceNumber(factura.getInvoicenumber());
-        invoice.setInvoiceTotal(new Double(factura.getTotal()));
-        invoice.setTotalTaxOutputs(new Double(factura.getTotaltaxoutputs()));
+        invoice.setInvoiceTotal(factura.getTotal());
+        invoice.setTotalTaxOutputs(factura.getTotaltaxoutputs());
         
         invoice.setIssueDate(factura.getIssueData());
         
@@ -159,9 +159,9 @@ public class FacturaResource {
 		invoiceData.setF3("");
 		invoiceData.setF4(factura.getInvoicenumber());
 		
-		invoiceData.setF5(new Double(factura.getTotal()));
-		invoiceData.setF6(new Double(factura.getTotaltaxoutputs()));
-		invoiceData.setF7(new Double(factura.getTotalgrossamount()));
+		invoiceData.setF5(factura.getTotal());
+		invoiceData.setF6(factura.getTotaltaxoutputs());
+		invoiceData.setF7(factura.getTotalgrossamount());
 		invoiceData.setF8(factura.getIssueData());
 		return invoiceData;
 	}
