@@ -138,7 +138,7 @@ public class BasicConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/keys").hasRole("USER")
                 .antMatchers(HttpMethod.PUT, "/keys/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PATCH, "/keys/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/keys/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/keys/**").hasRole("USER")
                 .and()
                 .csrf().disable()
                 .formLogin().disable();

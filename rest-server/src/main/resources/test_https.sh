@@ -7,6 +7,7 @@ CACERT_PATH=/Users/jherranzm/Downloads/dwcode-xades/cacert.pem
 FACTURAS_URL=https://127.0.0.1:8443/facturas
 SIGNUP_URL=https://127.0.0.1:8443/signup
 LOGIN_URL=https://127.0.0.1:8443/login
+KEYS_URL=https://127.0.0.1:8443/keys
 
 USER_NOT_EXISTS=jherranzm@gmeil.com
 
@@ -77,4 +78,31 @@ echo
 TEST_008=$(curl -H "Content-Type: application/json" -X POST -d '{"op":"login"}' --silent --cacert $CACERT_PATH $LOGIN_URL -u $USER:$PASS )
 
 echo $TEST_008
+
+echo 
+echo Test 009: delete existing sym key backed up in server
+echo 
+
+TEST_009=$(curl -X "DELETE"  --silent --cacert $CACERT_PATH https://127.0.0.1:8443/keys/f1 -u $USER:$PASS )
+
+echo $TEST_009
+
+
+echo 
+echo Test 010: delete non existing sym key backed up in server
+echo 
+
+TEST_010=$(curl -X "DELETE"  --silent --cacert $CACERT_PATH https://127.0.0.1:8443/keys/f10 -u $USER:$PASS )
+
+echo $TEST_010
+
+
+
+echo 
+echo Test 011: delete all existing sym key backep up in server 
+echo 
+
+TEST_011=$(curl -X "DELETE"  --silent --cacert $CACERT_PATH https://127.0.0.1:8443/keys -u $USER:$PASS )
+
+echo $TEST_011
 

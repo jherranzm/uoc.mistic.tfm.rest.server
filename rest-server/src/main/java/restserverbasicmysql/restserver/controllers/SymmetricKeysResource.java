@@ -94,4 +94,32 @@ public class SymmetricKeysResource {
         return new ResponseEntity<SymmetricKey>(existingSymKey.get(), HttpStatus.OK);
     }
 
+	@RequestMapping(value = "/keys/{f}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> delete(@AuthenticationPrincipal CustomUser user, @PathVariable("f") String f) {
+		logger.info("Deleting user {} SymmetricKey {}", user.getUsuario().getEmail(), f);
+		Optional<SymmetricKey> existingSymKey = symmetricKeyRepository.findByFByUsuario(f, user.getUsuario());
+
+        if (!existingSymKey.isPresent()) {
+        	logger.info("User {} SymmetricKey {} NOT FOUND!", user.getUsuario().getEmail(), f);
+            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+        }
+
+        symmetricKeyRepository.delete(existingSymKey.get());
+        logger.info("Deleted user {} SymmetricKey {}", user.getUsuario().getEmail(), f);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+	@RequestMapping(value = "/keys", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> deleteAll(@AuthenticationPrincipal CustomUser user) {
+		logger.info("Deleting All user {} SymmetricKeys", user.getUsuario().getEmail());
+		List<SymmetricKey> existingSymKey = symmetricKeyRepository.findByByUsuario(user.getUsuario());
+
+        if (existingSymKey.isEmpty()) {
+        	logger.info("User {} SymmetricKeys NOT FOUND!", user.getUsuario().getEmail());
+            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+        }
+
+        symmetricKeyRepository.deleteAllByUser(user.getUsuario());
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
 }
