@@ -226,28 +226,6 @@ VALUES
 'ROLE_CONSULTA',
 '');
 
-SELECT * FROM tfm.tbl_usuari;
-SELECT * FROM tfm.tbl_role;
-SELECT * FROM tfm.tbl_usuari_role;
-SELECT * FROM tfm.tbl_token;
-
-select * from tfm.tbl_factura;
-select * from tfm.tbl_invoice;
-select * from tfm.tbl_invoice_data;
-select * from tfm.tbl_kkeys;
-select * from tfm.tbl_back_up;
-
-select * 
-FROM tfm.tbl_usuari u
-left join tfm.tbl_usuari_role ur on 1 = 1
-	and u.id = ur.usuari_id
-left join tfm.tbl_role r on 1 = 1
-	and r.id = ur.role_id
-;
-
-select k.k, right(k.k, 25), count(*) 
-from tfm.tbl_kkeys k
-group by k.k;
 
 
 -- Change double fields to string
@@ -294,4 +272,43 @@ CREATE TABLE tfm.tbl_invoice (
 	PRIMARY KEY (id),
 	CONSTRAINT tfm_invoice_fk_1 FOREIGN KEY (usuari_id) REFERENCES tfm.tbl_usuari (id) ON DELETE CASCADE
 	) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS tfm.tbl_keystore;
+CREATE TABLE tfm.tbl_keystore (
+  id 							bigint(20) NOT NULL AUTO_INCREMENT,
+  
+  usuari_id 					bigint(20) NOT NULL,
+  keystore 						LONGTEXT NOT NULL,
+  
+  creation_time 				TIMESTAMP DEFAULT '0000-00-00 00:00:00',
+  update_time 					TIMESTAMP default now() on update now(),
+  PRIMARY KEY (id),
+  unique u_id (id),
+  CONSTRAINT tfm_keystore_fk_1 FOREIGN KEY (usuari_id) REFERENCES tfm.tbl_usuari (id) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
+SELECT * FROM tfm.tbl_usuari;
+SELECT * FROM tfm.tbl_role;
+SELECT * FROM tfm.tbl_usuari_role;
+SELECT * FROM tfm.tbl_token;
+SELECT * FROM tfm.tbl_keystore;
+
+select * from tfm.tbl_factura;
+select * from tfm.tbl_invoice;
+select * from tfm.tbl_invoice_data;
+select * from tfm.tbl_kkeys;
+select * from tfm.tbl_back_up;
+
+select * 
+FROM tfm.tbl_usuari u
+left join tfm.tbl_usuari_role ur on 1 = 1
+	and u.id = ur.usuari_id
+left join tfm.tbl_role r on 1 = 1
+	and r.id = ur.role_id
+;
+
+select k.k, right(k.k, 25), count(*) 
+from tfm.tbl_kkeys k
+group by k.k;
 

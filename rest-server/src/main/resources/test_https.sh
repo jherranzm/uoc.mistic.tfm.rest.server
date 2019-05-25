@@ -83,7 +83,7 @@ echo
 echo Test 009: delete existing sym key backed up in server
 echo 
 
-TEST_009=$(curl -X "DELETE"  --silent --cacert $CACERT_PATH https://127.0.0.1:8443/keys/f1 -u $USER:$PASS )
+#TEST_009=$(curl -X "DELETE"  --silent --cacert $CACERT_PATH https://127.0.0.1:8443/keys/f1 -u $USER:$PASS )
 
 echo $TEST_009
 
@@ -102,7 +102,55 @@ echo
 echo Test 011: delete all existing sym key backep up in server 
 echo 
 
-TEST_011=$(curl -X "DELETE"  --silent --cacert $CACERT_PATH https://127.0.0.1:8443/keys -u $USER:$PASS )
+#TEST_011=$(curl -X "DELETE"  --silent --cacert $CACERT_PATH https://127.0.0.1:8443/keys -u $USER:$PASS )
 
 echo $TEST_011
+
+echo 
+echo Test 012: upload keystore to server: NO DATA 
+echo 
+
+TEST_012=$(curl -H "Content-Type: application/json" -X "POST" -d '{}' --silent --cacert $CACERT_PATH https://127.0.0.1:8443/ksb -u $USER:$PASS )
+
+echo $TEST_012
+
+echo 
+echo Test 013: upload keystore to server: OP NOT Exists 
+echo 
+
+TEST_013=$(curl -H "Content-Type: application/json" -X "POST" -d '{"op":"any"}' --silent --cacert $CACERT_PATH https://127.0.0.1:8443/ksb -u $USER:$PASS )
+
+echo $TEST_013
+
+echo 
+echo Test 014: upload keystore to server: OP Correct BUT no KeyStore Data 
+echo 
+
+TEST_014=$(curl -H "Content-Type: application/json" -X "POST" -d '{"op":"store", "field" : "pp"}' --silent --cacert $CACERT_PATH https://127.0.0.1:8443/ksb -u $USER:$PASS )
+
+echo $TEST_014
+
+echo 
+echo Test 014: upload keystore to server: OP Correct BUT no KeyStore Data 
+echo 
+
+TEST_014=$(curl -H "Content-Type: application/json" -X "POST" -d '{"op":"store", "str" : ""}' --silent --cacert $CACERT_PATH https://127.0.0.1:8443/ksb -u $USER:$PASS )
+
+echo $TEST_014
+
+echo 
+echo Test 015: upload keystore to server: OP Correct KeyStore Data Correct
+echo 
+
+TEST_015=$(curl -H "Content-Type: application/json" -X "POST" -d '{"op":"store", "str" : "TheHyperSuperComplicatedAndEncriptedKeyStoreData"}' --silent --cacert $CACERT_PATH https://127.0.0.1:8443/ksb -u $USER:$PASS )
+
+echo $TEST_015
+
+echo 
+echo Test 016: upload keystore to server: OP Correct KeyStore Data Correct, update user KeyStore
+echo 
+
+TEST_016=$(curl -H "Content-Type: application/json" -X "POST" -d '{"op":"store", "str" : "TheHyperSuperComplicatedAndEncriptedKeyStoreData2"}' --silent --cacert $CACERT_PATH https://127.0.0.1:8443/ksb -u $USER:$PASS )
+
+echo $TEST_016
 
