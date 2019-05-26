@@ -39,6 +39,9 @@ public class KeyStoreBackUp implements Serializable {
 	@Column(name="keystore", columnDefinition="LONGTEXT", nullable=false)
 	private String keystore;
 	
+	@Column(name="iv", columnDefinition="LONGTEXT", nullable=false)
+	private String iv;
+	
 	@Column(name = "creation_time", nullable = false)
 	private Timestamp creationTime;
 
@@ -66,6 +69,14 @@ public class KeyStoreBackUp implements Serializable {
 		this.keystore = keystore;
 	}
 
+	public String getIv() {
+		return iv;
+	}
+
+	public void setIv(String iv) {
+		this.iv = iv;
+	}
+
 	public Timestamp getCreationTime() {
 		return creationTime;
 	}
@@ -78,7 +89,8 @@ public class KeyStoreBackUp implements Serializable {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("KeyStoreBackUp [\nid=").append(id).append(", \nusuario=").append(usuario)
-				.append(", \nkeystore=").append(keystore).append("\n]");
+				.append(", \nkeystore=").append(keystore).append(", \niv=").append(iv).append(", \ncreationTime=")
+				.append(creationTime).append("\n]");
 		return builder.toString();
 	}
 	

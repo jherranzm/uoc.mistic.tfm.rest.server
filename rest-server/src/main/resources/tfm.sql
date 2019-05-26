@@ -185,23 +185,23 @@ CREATE TABLE tfm.tbl_back_up (
 
 
 CREATE TABLE tfm.tbl_invoice (
-	id bigint(20) NOT NULL AUTO_INCREMENT,
+	id 							bigint(20) NOT NULL AUTO_INCREMENT,
 
-	usuari_id bigint(20) NOT NULL,
+	usuari_id 					bigint(20) NOT NULL,
 
-	uid VARCHAR(100) NOT NULL,
-	tax_identification_number VARCHAR(255) NOT NULL,
-	corporate_name VARCHAR(255) NOT NULL,
-	invoice_number VARCHAR(255) NOT NULL,
-	invoice_total DOUBLE(15,4) default 0.0,
-	total_Tax_outputs DOUBLE(15,4) default 0.0,
-	issue_date VARCHAR(255) NOT NULL,
-	signed_invoice LONGTEXT NOT NULL,
+	uid 						VARCHAR(100) NOT NULL,
+	tax_identification_number 	VARCHAR(255) NOT NULL,
+	corporate_name 				VARCHAR(255) NOT NULL,
+	invoice_number 				VARCHAR(255) NOT NULL,
+	invoice_total 				DOUBLE(15,4) default 0.0,
+	total_Tax_outputs 			DOUBLE(15,4) default 0.0,
+	issue_date 					VARCHAR(255) NOT NULL,
+	signed_invoice 				LONGTEXT NOT NULL,
 
-	iv LONGTEXT NOT NULL,
-	sim_key LONGTEXT NOT NULL,
+	iv 							LONGTEXT NOT NULL,
+	sim_key 					LONGTEXT NOT NULL,
 
-	data_creacio TIMESTAMP NOT NULL default CURRENT_TIMESTAMP,
+	data_creacio 				TIMESTAMP NOT NULL default CURRENT_TIMESTAMP,
 	PRIMARY KEY (id),
 	CONSTRAINT tfm_invoice_fk_1 FOREIGN KEY (usuari_id) REFERENCES tfm.tbl_usuari (id) ON DELETE CASCADE
 	) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
@@ -278,10 +278,11 @@ CREATE TABLE tfm.tbl_keystore (
   id 							bigint(20) NOT NULL AUTO_INCREMENT,
   
   usuari_id 					bigint(20) NOT NULL,
+  iv 							LONGTEXT NOT NULL,
   keystore 						LONGTEXT NOT NULL,
   
   creation_time 				TIMESTAMP DEFAULT '0000-00-00 00:00:00',
-  update_time 					TIMESTAMP default now() on update now(),
+  update_time 					TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
   unique u_id (id),
   CONSTRAINT tfm_keystore_fk_1 FOREIGN KEY (usuari_id) REFERENCES tfm.tbl_usuari (id) ON DELETE CASCADE

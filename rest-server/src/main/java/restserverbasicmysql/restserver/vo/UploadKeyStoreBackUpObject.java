@@ -7,10 +7,8 @@ public class UploadKeyStoreBackUpObject implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private String op;
-	private String str;
-	
-	
-	
+	private String iv;
+	private String enc;
 	
 	public String getOp() {
 		return op;
@@ -18,18 +16,25 @@ public class UploadKeyStoreBackUpObject implements Serializable{
 	public void setOp(String op) {
 		this.op = op;
 	}
-	public String getStr() {
-		return str;
+	public String getIv() {
+		return iv;
 	}
-	public void setStr(String str) {
-		this.str = str;
+	public void setIv(String iv) {
+		this.iv = iv;
+	}
+	public String getEnc() {
+		return enc;
+	}
+	public void setEnc(String str) {
+		this.enc = str;
 	}
 	
 	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("UploadKeyStoreBackUpObject [\nop=").append(op).append(", \nstr=").append(str).append("\n]");
+		builder.append("UploadKeyStoreBackUpObject [\nop=").append(op).append(", \niv=").append(iv).append(", \nenc=")
+				.append(enc).append("\n]");
 		return builder.toString();
 	}
 	

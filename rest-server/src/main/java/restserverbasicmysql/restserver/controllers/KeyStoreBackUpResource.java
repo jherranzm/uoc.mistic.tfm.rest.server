@@ -62,9 +62,14 @@ public class KeyStoreBackUpResource {
 				response.put("message", "The operation is not supported.");
 				response.put("error_code", "ERR_OP_NOT_SUPPORTED");
 				return new ResponseEntity<Map<String, String>>(response, HttpStatus.METHOD_NOT_ALLOWED);
-		}else if(uploadObject.getStr() == null || uploadObject.getStr().isEmpty()) {
+		}else if(
+				uploadObject.getEnc() == null 
+				|| uploadObject.getEnc().isEmpty()
+				|| uploadObject.getIv() == null
+				|| uploadObject.getIv().isEmpty()
+				) {
 			Map<String, String> response = new HashMap<>();
-			response.put("message", "No KeyStore informed");
+			response.put("message", "Not enough data informed");
 			response.put("error_code", "ERR_NO_DATA");
 			return new ResponseEntity<Map<String, String>>(response, HttpStatus.BAD_REQUEST);
 		}
@@ -76,12 +81,14 @@ public class KeyStoreBackUpResource {
         if(optionalKeyStoreBackUp.isPresent()){
         	KeyStoreBackUp existing = optionalKeyStoreBackUp.get();
         	logger.info("La KeyStore del usuario YA está en el sistema. Se actualiza!  [{}]", existing.getUsuario().getEmail());
-        	existing.setKeystore(uploadObject.getStr());
+        	existing.setKeystore(uploadObject.getEnc());
+        	existing.setIv(uploadObject.getIv());
         	KeyStoreBackUp updatedKeyStoreBackUp = keyStoreBackUpRepository.save(existing);
         	return new ResponseEntity<KeyStoreBackUp>(updatedKeyStoreBackUp, HttpStatus.OK);
         }else {
         	KeyStoreBackUp newKeyStoreBackUp = new KeyStoreBackUp();
-        	newKeyStoreBackUp.setKeystore(uploadObject.getStr());
+        	newKeyStoreBackUp.setKeystore(uploadObject.getEnc());
+        	newKeyStoreBackUp.setIv(uploadObject.getIv());
         	newKeyStoreBackUp.setUsuario(user.getUsuario());
         	newKeyStoreBackUp.setCreationTime(null);
         	newKeyStoreBackUp = keyStoreBackUpRepository.save(newKeyStoreBackUp);
