@@ -1,7 +1,9 @@
 package restserverbasicmysql.restserver.controllers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -30,9 +32,8 @@ public class SymmetricKeysResource {
 	@Autowired
 	private SymmetricKeyRepository symmetricKeyRepository;
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value="/keys", method = RequestMethod.GET)
-	public ResponseEntity<List<SymmetricKey>> retrieveAll(@AuthenticationPrincipal CustomUser user) {
+	public ResponseEntity<?> retrieveAll(@AuthenticationPrincipal CustomUser user) {
 		
 		logger.info(String.format("User logged : %s", user.getUsuario().getEmail()));
 		
@@ -41,7 +42,11 @@ public class SymmetricKeysResource {
 		symKeys = symmetricKeyRepository.findAllByUsuario(user.getUsuario());
         if (symKeys.isEmpty()) {
         		logger.warn("Sin claves simétricas!");
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
+    			Map<String, Object> json = new HashMap<String, Object>();
+    			json.put("responseCode", HttpStatus.NO_CONTENT.value());
+    			json.put("message", "There are no keys in the server.");
+
+            return new ResponseEntity<Map<String, Object>>(json, HttpStatus.OK);
         }
         logger.info("Se han recuperado [{}] claves simétricas del usuario [{}]", symKeys.size(), user.getUsuario());
         return new ResponseEntity<List<SymmetricKey>>(symKeys, HttpStatus.OK);
@@ -95,31 +100,43 @@ public class SymmetricKeysResource {
     }
 
 	@RequestMapping(value = "/keys/{f}", method = RequestMethod.DELETE)
-    public ResponseEntity<Void> delete(@AuthenticationPrincipal CustomUser user, @PathVariable("f") String f) {
+    public ResponseEntity<?> delete(@AuthenticationPrincipal CustomUser user, @PathVariable("f") String f) {
 		logger.info("Deleting user {} SymmetricKey {}", user.getUsuario().getEmail(), f);
 		Optional<SymmetricKey> existingSymKey = symmetricKeyRepository.findByFByUsuario(f, user.getUsuario());
 
         if (!existingSymKey.isPresent()) {
         	logger.info("User {} SymmetricKey {} NOT FOUND!", user.getUsuario().getEmail(), f);
-            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+			Map<String, Object> json = new HashMap<String, Object>();
+			json.put("responseCode", HttpStatus.BAD_REQUEST.value());
+			json.put("message", String.format("User [%s] Key [%s] NOT FOUND!", user.getUsuario().getEmail(), f));
+            return new ResponseEntity<Map<String, Object>>(json, HttpStatus.NOT_FOUND);
         }
 
         symmetricKeyRepository.delete(existingSymKey.get());
         logger.info("Deleted user {} SymmetricKey {}", user.getUsuario().getEmail(), f);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+		Map<String, Object> json = new HashMap<String, Object>();
+		json.put("responseCode", HttpStatus.OK.value());
+		json.put("message", String.format("User [%s] Key [%s] Correctly deleted!", user.getUsuario().getEmail(), f));
+        return new ResponseEntity<Map<String, Object>>(json, HttpStatus.OK);
     }
 
 	@RequestMapping(value = "/keys", method = RequestMethod.DELETE)
-    public ResponseEntity<Void> deleteAll(@AuthenticationPrincipal CustomUser user) {
+    public ResponseEntity<?> deleteAll(@AuthenticationPrincipal CustomUser user) {
 		logger.info("Deleting All user {} SymmetricKeys", user.getUsuario().getEmail());
 		List<SymmetricKey> existingSymKey = symmetricKeyRepository.findByByUsuario(user.getUsuario());
 
         if (existingSymKey.isEmpty()) {
         	logger.info("User {} SymmetricKeys NOT FOUND!", user.getUsuario().getEmail());
-            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+			Map<String, Object> json = new HashMap<String, Object>();
+			json.put("responseCode", HttpStatus.BAD_REQUEST.value());
+			json.put("message", String.format("User [%s] Keys NOT FOUND!", user.getUsuario().getEmail()));
+            return new ResponseEntity<Map<String, Object>>(json, HttpStatus.NOT_FOUND);
         }
 
         symmetricKeyRepository.deleteAllByUser(user.getUsuario());
-        return new ResponseEntity<Void>(HttpStatus.OK);
+		Map<String, Object> json = new HashMap<String, Object>();
+		json.put("responseCode", HttpStatus.OK.value());
+		json.put("message", String.format("User [%s] Keys Correctly deleted!", user.getUsuario().getEmail()));
+        return new ResponseEntity<Map<String, Object>>(json, HttpStatus.OK);
     }
 }

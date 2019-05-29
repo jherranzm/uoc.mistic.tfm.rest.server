@@ -20,7 +20,7 @@ drop table if exists tfm.tbl_back_up;
 drop table if exists tfm.tbl_backUp;
 drop table if exists tfm.tbl_users;
 
-
+DROP TABLE IF EXISTS tfm.tbl_keystore;
 drop table if exists tfm.tbl_token;
 drop table if exists tfm.tbl_usuari_role;
 drop table if exists tfm.tbl_role;
@@ -313,3 +313,8 @@ select k.k, right(k.k, 25), count(*)
 from tfm.tbl_kkeys k
 group by k.k;
 
+delete from tfm.tbl_usuari
+where email in ('jherranzm.dev@gmail.com', 'jherranzm@uoc.edu');
+
+-- UPDATE `tfm`.`tbl_usuari` SET `enabled`='0' WHERE `id`='20';
+-- UPDATE `tfm`.`tbl_token` SET `used`='0' WHERE `id`='19';
