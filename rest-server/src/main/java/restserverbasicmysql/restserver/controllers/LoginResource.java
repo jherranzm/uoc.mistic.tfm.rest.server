@@ -32,6 +32,17 @@ public class LoginResource {
 		
 		logger.info("Received [{}]", userPasswordObject.toString());
 		
+		if(userPasswordObject.getOp() == null 
+				|| userPasswordObject.getOp().isEmpty() 
+				|| !userPasswordObject.getOp().equals("login")
+				){
+			Map<String, Object> json = new HashMap<String, Object>();
+			json.put("responseCode", HttpStatus.BAD_REQUEST.value());
+			json.put("message", "Operation NOT informed or NOT supported");
+			logger.info("Message returned [{}]", json);
+			return new ResponseEntity<Map<String, Object>>(json, HttpStatus.BAD_REQUEST);
+		}
+		
 		logger.info("User connected [{}]", user.getUsername());
 		logger.info("User enabled [{}]", user.isEnabled());
 		logger.info("User isCredentialsNonExpired [{}]", user.isCredentialsNonExpired());

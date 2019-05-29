@@ -16,12 +16,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
 @XmlRootElement
 @Table(schema="tfm", name="tbl_role")
 @EntityListeners(AuditingEntityListener.class)
+@JsonInclude(Include.NON_NULL)
 @JsonIgnoreProperties(value = {"creationTime", "usuarios"}, 
         allowGetters = true)
 
@@ -39,9 +43,11 @@ public class Role implements Serializable {
 	@Column(name = "comentaris", columnDefinition="LONGTEXT")
 	private String comentaris;
 
+	@JsonIgnore
 	@Column(name="creation_time", nullable=false)
 	private Timestamp creationTime;
 	
+	@JsonIgnore
 	@ManyToMany(mappedBy = "roles")
 	private Set<Usuario> usuarios;
 	
@@ -86,8 +92,9 @@ public class Role implements Serializable {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Role [\nid=").append(id).append(", \nnom=").append(nom).append(", \ncomentaris=")
-				.append(comentaris).append(", \ncreationTime=").append(creationTime).append("\n]");
+		builder.append("Role [\nid=").append(id)
+		.append(", \nnom=").append(nom)
+		.append(", \ncomentaris=").append(comentaris).append(", \ncreationTime=").append(creationTime).append("\n]");
 		return builder.toString();
 	}
 

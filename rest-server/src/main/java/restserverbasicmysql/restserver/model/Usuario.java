@@ -21,13 +21,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
 @XmlRootElement
 @Table(schema = "tfm", name = "tbl_usuari")
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value = {"creationTime", "numRoles", "roles"}, 
+@JsonInclude(Include.NON_NULL)
+@JsonIgnoreProperties(value = {"creationTime", "numRoles", "roles", "pass"}, 
         allowGetters = true)
 
 public class Usuario implements Serializable, Comparable<Usuario> {
@@ -39,12 +43,15 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	private Long id;
 
 	private String username;
+	
+	@JsonIgnore
 	private String pass;
 	
 	@Column(name="certificate", columnDefinition="LONGTEXT", nullable=true)
 	private String certificate;
 
 	private String email;
+	
 	private boolean enabled;
 	
 	@Column(name="comentaris", columnDefinition="LONGTEXT", nullable=false)
@@ -64,6 +71,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 			)
 	private Set<Role> roles;
 
+	@JsonIgnore
 	@OneToMany(mappedBy="usuario")
 	private Set<Token> tokens;
 
@@ -90,6 +98,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 		this.username = username;
 	}
 
+	@JsonIgnore
 	public String getPassword() {
 		return pass;
 	}
@@ -122,6 +131,7 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 		this.comentaris = comentarios;
 	}
 
+	@JsonIgnore
 	public Set<Role> getRoles() {
 		return roles;
 	}
@@ -133,7 +143,8 @@ public class Usuario implements Serializable, Comparable<Usuario> {
 	public String getPass() {
 		return pass;
 	}
-
+	
+	@JsonIgnore
 	public void setPass(String pass) {
 		this.pass = pass;
 	}

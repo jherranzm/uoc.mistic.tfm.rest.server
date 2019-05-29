@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
@@ -14,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -54,6 +55,37 @@ public class SignUpResource {
 	public ResponseEntity<Map<String, Object>> signup(@RequestBody UserPasswordObject userPasswordObject) {
 
 		logger.info("Received [{}]", userPasswordObject.toString());
+		
+		if(userPasswordObject.getOp() == null 
+				|| userPasswordObject.getOp().isEmpty() 
+				|| !userPasswordObject.getOp().equals("signup")
+				){
+			Map<String, Object> json = new HashMap<String, Object>();
+			json.put("responseCode", HttpStatus.BAD_REQUEST.value());
+			json.put("message", "Operation NOT informed or NOT supported");
+			logger.info("Message returned [{}]", json);
+			return new ResponseEntity<Map<String, Object>>(json, HttpStatus.BAD_REQUEST);
+		}
+		
+		if(userPasswordObject.getUsername() == null 
+				|| userPasswordObject.getUsername().isEmpty() 
+				|| !isValidEmail(userPasswordObject.getUsername())
+				){
+			Map<String, Object> json = new HashMap<String, Object>();
+			json.put("responseCode", HttpStatus.BAD_REQUEST.value());
+			json.put("message", "User is NOT a valid email");
+			return new ResponseEntity<Map<String, Object>>(json, HttpStatus.BAD_REQUEST);
+		}
+		
+		if(userPasswordObject.getPass() == null 
+				|| userPasswordObject.getPass().isEmpty() 
+				|| !isValidPass(userPasswordObject.getPass())
+				){
+			Map<String, Object> json = new HashMap<String, Object>();
+			json.put("responseCode", HttpStatus.BAD_REQUEST.value());
+			json.put("message", "Password NOT enough long");
+			return new ResponseEntity<Map<String, Object>>(json, HttpStatus.BAD_REQUEST);
+		}
 
 		// Does the username exists in the users table
 		Optional<Usuario> existingUsuario = usuarioRepository.findByUsername(userPasswordObject.getUsername());
@@ -120,5 +152,20 @@ public class SignUpResource {
 
 		// return new ResponseEntity<String>("OK!", HttpStatus.OK);
 	}
+	
+	private boolean isValidPass(String pass) {
+		
+		return (pass.length() >= 12);
+	}
+
+	private boolean isValidEmail(String email) {
+		String regex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
+		Pattern pattern = Pattern.compile(regex);
+		 
+		    Matcher matcher = pattern.matcher(email);
+		    logger.info(email +" : "+ matcher.matches());
+		return matcher.matches();
+	}
 
 }
+

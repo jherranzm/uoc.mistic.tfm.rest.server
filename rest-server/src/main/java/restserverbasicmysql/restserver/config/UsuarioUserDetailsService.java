@@ -41,7 +41,7 @@ public class UsuarioUserDetailsService implements UserDetailsService {
 			logger.error(String.format("El usuario [%s] NO se encuentra!", username));
 			throw new UsernameNotFoundException(String.format("El usuario [%s] NO se encuentra!", username));
 		}
-		logger.info(String.format("Buscando el usuario [%s]...", optUsuario.isPresent()));
+		logger.info(String.format("El usuario está en el sistema [%s]...", optUsuario.isPresent()));
 		Usuario usuario = optUsuario.get();
 		logger.info(String.format("Usuario.email. [%s]...", usuario.getEmail()));
 		//logger.info(String.format("Localizado el usuario [%s]...", usuario.toString()));
@@ -69,6 +69,8 @@ public class UsuarioUserDetailsService implements UserDetailsService {
 				credentialsNonExpired,
 				accountNonLocked,
 				getAuthorities(usuario.getRoles()));
+		
+		logger.info(String.format("User: [%s]...", user.toString()));
 		
 		return new CustomUser(usuario, user);
 		
