@@ -1,7 +1,9 @@
 package restserverbasicmysql.restserver.controllers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -16,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import restserverbasicmysql.restserver.error.CustomErrorType;
 import restserverbasicmysql.restserver.model.BackUp;
 import restserverbasicmysql.restserver.model.CustomUser;
 import restserverbasicmysql.restserver.model.Invoice;
@@ -59,7 +60,6 @@ public class FacturaResource {
         return new ResponseEntity<List<Invoice>>(facturas, HttpStatus.OK);
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/facturas/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> getFactura(@AuthenticationPrincipal CustomUser user, @PathVariable("id") long id) {
 		
@@ -69,7 +69,10 @@ public class FacturaResource {
         Optional<Invoice> factura = invoiceRepository.findByIdByUsuario(id, user.getUsuario());
         if (!factura.isPresent()) {
             logger.error("Factura con id {} NO encontrada.", id);
-            return new ResponseEntity(new CustomErrorType("Factura con id " + id  + " NO encontrada."), HttpStatus.NOT_FOUND);
+			Map<String, Object> json = new HashMap<String, Object>();
+			json.put("responseCode", HttpStatus.BAD_REQUEST.value());
+			json.put("message", String.format("User [%s] Invoice [%s] NOT FOUND!", user.getUsuario().getEmail(), id));
+            return new ResponseEntity<Map<String, Object>>(json, HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<Invoice>(factura.get(), HttpStatus.OK);
     }

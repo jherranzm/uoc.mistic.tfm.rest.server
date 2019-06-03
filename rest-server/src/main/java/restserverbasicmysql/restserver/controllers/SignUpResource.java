@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import restserverbasicmysql.restserver.config.TokenGenerator;
 import restserverbasicmysql.restserver.mail.MailService;
 import restserverbasicmysql.restserver.model.Role;
 import restserverbasicmysql.restserver.model.Token;
@@ -29,6 +28,7 @@ import restserverbasicmysql.restserver.model.Usuario;
 import restserverbasicmysql.restserver.repos.RoleRepository;
 import restserverbasicmysql.restserver.repos.TokenRepository;
 import restserverbasicmysql.restserver.repos.UsuarioRepository;
+import restserverbasicmysql.restserver.util.TokenGenerator;
 import restserverbasicmysql.restserver.vo.UserPasswordObject;
 
 @RestController

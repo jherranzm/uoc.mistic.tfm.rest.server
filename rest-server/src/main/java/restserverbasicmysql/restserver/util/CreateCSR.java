@@ -1,4 +1,4 @@
-package restserverbasicmysql.restserver.config;
+package restserverbasicmysql.restserver.util;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,6 +32,8 @@ import org.bouncycastle.pkcs.jcajce.JcaPKCS10CertificationRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ResourceUtils;
+
+import restserverbasicmysql.restserver.config.Constants;
 
 public class CreateCSR {
 	

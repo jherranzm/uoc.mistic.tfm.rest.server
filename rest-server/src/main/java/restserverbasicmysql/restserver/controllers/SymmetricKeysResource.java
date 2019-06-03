@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import restserverbasicmysql.restserver.error.CustomErrorType;
 import restserverbasicmysql.restserver.model.CustomUser;
 import restserverbasicmysql.restserver.model.SymmetricKey;
 import restserverbasicmysql.restserver.repos.SymmetricKeyRepository;
@@ -84,7 +83,6 @@ public class SymmetricKeysResource {
 		return newSymKey;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/keys/{f}", method = RequestMethod.GET)
     public ResponseEntity<?> getKey(@AuthenticationPrincipal CustomUser user, @PathVariable("f") String f) {
 		
@@ -94,7 +92,10 @@ public class SymmetricKeysResource {
         Optional<SymmetricKey> existingSymKey = symmetricKeyRepository.findByFByUsuario(f, user.getUsuario());
         if (!existingSymKey.isPresent()) {
             logger.error("Clave con f [{}] del usuario [{}] NO encontrada.", f, user.getUsuario().getEmail());
-            return new ResponseEntity(new CustomErrorType("Clave con f " + f  + " del usuario "+ user.getUsuario().getEmail() +" NO encontrada."), HttpStatus.NOT_FOUND);
+			Map<String, Object> json = new HashMap<String, Object>();
+			json.put("responseCode", HttpStatus.BAD_REQUEST.value());
+			json.put("message", String.format("User [%s] Key [%s] NOT FOUND!", user.getUsuario().getEmail(), f));
+            return new ResponseEntity<Map<String, Object>>(json, HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<SymmetricKey>(existingSymKey.get(), HttpStatus.OK);
     }

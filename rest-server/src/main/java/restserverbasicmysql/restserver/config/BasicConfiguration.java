@@ -25,6 +25,7 @@ import restserverbasicmysql.restserver.model.Role;
 import restserverbasicmysql.restserver.model.Usuario;
 import restserverbasicmysql.restserver.repos.RoleRepository;
 import restserverbasicmysql.restserver.repos.UsuarioRepository;
+import restserverbasicmysql.restserver.util.UsuarioUserDetailsService;
 
 @Configuration
 @EnableWebSecurity

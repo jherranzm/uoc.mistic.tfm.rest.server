@@ -1,8 +1,6 @@
 package restserverbasicmysql.restserver.controllers;
 
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -23,6 +21,11 @@ import restserverbasicmysql.restserver.repos.UsuarioRepository;
 @RestController
 public class TokenResource {
 	
+	private static final String USER_ENABLED = "User %s ENABLED!.";
+	private static final String USER_DOES_NOT_EXIST = "User %s DOES NOT exist!.";
+	private static final String THE_TOKEN_IS_OUT_OF_DATE = "The token is OUT of date and therefore NOT valid. User not enabled.";
+	private static final String THE_TOKEN_IS_NOT_VALID = "The token is NOT valid.";
+
 	public static final Logger logger = LoggerFactory.getLogger(TokenResource.class);
 	
 	@Autowired
@@ -37,14 +40,10 @@ public class TokenResource {
 		//TODO: Les respostes han d'esser en format texte NO en format JSON
 		logger.info("Received [{}]", token);
 		
-		Map<String, Object> jsonResponse = new HashMap<String, Object>();
-		
 		Optional<Token> optionalToken = tokenRepository.findBytoken(token);
 		if(!optionalToken.isPresent()) {
-			jsonResponse.put("responseCode", HttpStatus.CONFLICT.value());
-			jsonResponse.put("message", "The token is NOT valid.");
-			
-			return new ResponseEntity<Map<String, Object>>(jsonResponse, HttpStatus.OK);
+			logger.error(THE_TOKEN_IS_NOT_VALID);
+			return new ResponseEntity<String>(THE_TOKEN_IS_NOT_VALID, HttpStatus.OK);
 		}
 		Token theToken = optionalToken.get();
 		
@@ -55,22 +54,16 @@ public class TokenResource {
 				|| !theToken.getValid_to().after(cal.getTime())
 				|| theToken.isUsed()
 				){
-			logger.error("The token is NOT valid.");
-			logger.info("Time frame incorrect or token used!");
-			
-			jsonResponse.put("responseCode", HttpStatus.CONFLICT.value());
-			jsonResponse.put("message", "The token is OUT of date and therfore NOT vàlid. User not enabled.");
-			
-			return new ResponseEntity<Map<String, Object>>(jsonResponse, HttpStatus.OK);
+			logger.error(THE_TOKEN_IS_OUT_OF_DATE);
+			return new ResponseEntity<String>(THE_TOKEN_IS_OUT_OF_DATE, HttpStatus.OK);
 		}
 		logger.info("Time frame correct and token not used!");
 			
 		Optional<Usuario> optionalUsuario = usuarioRepository.findByUsername(theToken.getUsuario().getEmail());
 		if(!optionalUsuario.isPresent()) {
-			jsonResponse.put("responseCode", HttpStatus.CONFLICT.value());
-			jsonResponse.put("message", "User " + theToken.getUsuario().getEmail() + " NOT exists!.");
-			
-			return new ResponseEntity<Map<String, Object>>(jsonResponse, HttpStatus.CONFLICT);
+			String message = String.format(USER_DOES_NOT_EXIST, theToken.getUsuario().getEmail());
+			logger.info(message);
+			return new ResponseEntity<String>(message, HttpStatus.CONFLICT);
 		}
 		
 		Usuario theUsuario = optionalUsuario.get();
@@ -81,11 +74,9 @@ public class TokenResource {
 		theToken.setUsed(true);
 		Token theTokenUpdated = tokenRepository.saveAndFlush(theToken);
 		logger.info("theTokenUpdated: [{}]", theTokenUpdated.toString());
-		
-		jsonResponse.put("responseCode", HttpStatus.OK.value());
-		jsonResponse.put("message", "User " + theToken.getUsuario().getEmail() + " ENABLED.");
-		
-		return new ResponseEntity<Map<String, Object>>(jsonResponse, HttpStatus.CONFLICT);
+		String message = String.format(USER_ENABLED, theToken.getUsuario().getEmail());
+		logger.info(message);
+		return new ResponseEntity<String>(message, HttpStatus.CONFLICT);
     }
 
 }

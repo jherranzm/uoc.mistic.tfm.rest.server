@@ -1,4 +1,4 @@
-package restserverbasicmysql.restserver.config;
+package restserverbasicmysql.restserver.util;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.2.3" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <class id="1" language="java" name="restserverbasicmysql.restserver.config.BasicConfiguration" project="rest-server" 
+    file="/rest-server/src/main/java/restserverbasicmysql/restserver/config/BasicConfiguration.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="281" width="305" x="51" y="36"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="restserverbasicmysql.restserver.config.Constants" project="rest-server" 
+    file="/rest-server/src/main/java/restserverbasicmysql/restserver/config/Constants.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="173" width="181" x="401" y="23"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="restserverbasicmysql.restserver.util.CreateCSR" project="rest-server" 
+    file="/rest-server/src/main/java/restserverbasicmysql/restserver/util/CreateCSR.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="744" y="101"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="restserverbasicmysql.restserver.config.FileStorageProperties" 
+    project="rest-server" 
+    file="/rest-server/src/main/java/restserverbasicmysql/restserver/config/FileStorageProperties.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="137" width="181" x="599" y="203"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="restserverbasicmysql.restserver.config.MySQLDialectCustom" project="rest-server" 
+    file="/rest-server/src/main/java/restserverbasicmysql/restserver/config/MySQLDialectCustom.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="83" width="181" x="684" y="378"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="restserverbasicmysql.restserver.util.TokenGenerator" project="rest-server" 
+    file="/rest-server/src/main/java/restserverbasicmysql/restserver/util/TokenGenerator.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="896" y="274"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="restserverbasicmysql.restserver.util.UsuarioUserDetailsService" 
+    project="rest-server" 
+    file="/rest-server/src/main/java/restserverbasicmysql/restserver/util/UsuarioUserDetailsService.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="155" width="381" x="48" y="361"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <association id="8">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="9" name="uuds">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="10" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

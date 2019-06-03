@@ -78,3 +78,14 @@ echo GET : $KEYS_URL/f1
 Test[$i]=$(curl -X "DELETE"  --silent --cacert $CACERT_PATH $KEYS_URL/f10 -u $USER:$PASS )
 
 echo Resposta : ${Test[$i]}
+
+
+#----------------------------------------------------
+i=$((i + 1))
+echo 
+echo Test[$i]: keys, AMB usuari ni contrasenya. No existeix la clau f10  
+echo GET : $KEYS_URL/f11
+
+Test[$i]=$(curl -X "GET"  --silent --cacert $CACERT_PATH $KEYS_URL/f11 -u $USER:$PASS )
+
+echo Resposta : ${Test[$i]}

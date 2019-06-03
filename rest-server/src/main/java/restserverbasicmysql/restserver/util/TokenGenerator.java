@@ -1,4 +1,4 @@
-package restserverbasicmysql.restserver.config;
+package restserverbasicmysql.restserver.util;
 
 import java.security.SecureRandom;
 

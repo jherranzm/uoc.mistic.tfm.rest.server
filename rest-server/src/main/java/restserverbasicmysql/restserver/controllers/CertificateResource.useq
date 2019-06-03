@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sequence-diagram version="1.2.3" icons="true" automaticImage="PNG" generate-combined-fragments="true">  
+  <object id="1" language="java" name="restserverbasicmysql.restserver.controllers.CertificateResource" 
+    project="rest-server" 
+    file="/rest-server/src/main/java/restserverbasicmysql/restserver/controllers/CertificateResource.java" 
+    binary="false" label="certificateResource" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="292" y="0"/>    
+    <execution id="2">      
+      <position height="126" width="197" x="218" y="160"/>    
+    </execution>    
+    <execution id="5">      
+      <position height="21" width="197" x="218" y="223"/>    
+    </execution>  
+  </object>  
+  <object id="6" language="java" name="restserverbasicmysql.restserver.util.CreateCSR" project="rest-server" 
+    file="/rest-server/src/main/java/restserverbasicmysql/restserver/util/CreateCSR.java" binary="false" 
+    label="createCSR" type="class" autoSize="true">    
+    <position height="-1" width="-1" x="470" y="0"/>    
+    <execution id="4">      
+      <position height="84" width="178" x="419" y="181"/>    
+    </execution>  
+  </object>  
+  <message id="3" asynchronous="false">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="4"/>  
+  </message>  
+  <message id="7" asynchronous="false">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="5"/>  
+  </message>
+</sequence-diagram>
