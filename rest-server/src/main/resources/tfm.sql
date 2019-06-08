@@ -318,3 +318,10 @@ where email in ('jherranzm.dev@gmail.com', 'jherranzm@uoc.edu');
 
 -- UPDATE `tfm`.`tbl_usuari` SET `enabled`='0' WHERE `id`='20';
 -- UPDATE `tfm`.`tbl_token` SET `used`='0' WHERE `id`='19';
+
+delete from tfm.tbl_kkeys;
+delete FROM tfm.tbl_keystore;
+
+delete from tfm.tbl_factura;
+delete from tfm.tbl_invoice;
+delete from tfm.tbl_invoice_data;

@@ -22,4 +22,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice, String> {
 
 	@Query("SELECT i FROM Invoice i WHERE i.id = ?1 and i.usuario = ?2")
 	Optional<Invoice> findByIdByUsuario(long id, Usuario usuario);
+
+	@Query("SELECT i FROM Invoice i WHERE i.uid = ?1 and i.usuario = ?2")
+	Optional<Invoice> findByUidByUsuario(String uid, Usuario usuario);
 }

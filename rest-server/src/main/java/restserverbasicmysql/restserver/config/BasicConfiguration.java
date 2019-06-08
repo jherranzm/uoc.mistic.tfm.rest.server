@@ -14,12 +14,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 import restserverbasicmysql.restserver.model.Role;
 import restserverbasicmysql.restserver.model.Usuario;
@@ -71,18 +67,6 @@ public class BasicConfiguration extends WebSecurityConfigurerAdapter {
 
 	}
 
-	
-	@Bean
-	public UserDetailsService userDetailsService() {
-		logger.info(String.format("*** Init UserDetailsService!", ""));
-		//PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-		UserDetails user = User.withUsername("user").password(passwordEncoder().encode("user")).roles("USER").build();
-		InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-		manager.createUser(user);
-		return manager;
-
-	}
-	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		PasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -98,13 +82,6 @@ public class BasicConfiguration extends WebSecurityConfigurerAdapter {
 		auth
 		.userDetailsService(uuds)
 		.passwordEncoder(passwordEncoder())
-//		.and()
-//		.inMemoryAuthentication()
-//		.withUser("admin").password(passwordEncoder().encode("admin"))
-//		.roles("ADMIN", "USER")
-//		.and()
-//		.withUser("user").password(passwordEncoder().encode("user"))
-//		.roles("USER")
 		;
 	}
 	
@@ -122,12 +99,11 @@ public class BasicConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 
                 .antMatchers("/status").permitAll()
-                //.antMatchers("/login").permitAll()
                 .antMatchers("/signup").permitAll()
                 .antMatchers("/token").permitAll()
+                .antMatchers("/ret/token").permitAll()
                 
-                .antMatchers(HttpMethod.POST, "/login").hasRole("USER") // I/PostDataToUrlTask: Código de respuesta del servidor : [200]
-                //.antMatchers(HttpMethod.POST, "/login").hasRole("ADMIN") // I/PostDataToUrlTask: Código de respuesta del servidor : [403]
+                .antMatchers(HttpMethod.POST, "/login").hasRole("USER") 
                 
                 .antMatchers(HttpMethod.GET, "/facturas/**").hasRole("USER")
                 .antMatchers(HttpMethod.POST, "/facturas").hasRole("USER")

@@ -11,4 +11,5 @@ import restserverbasicmysql.restserver.model.Usuario;
 @Repository
 public interface KeyStoreBackUpRepository extends JpaRepository<KeyStoreBackUp, Long> {
 	Optional<KeyStoreBackUp> findByUsuario(Usuario usuario);
+	Optional<KeyStoreBackUp> findByToken(String token);
 }

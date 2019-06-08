@@ -60,19 +60,19 @@ public class FacturaResource {
         return new ResponseEntity<List<Invoice>>(facturas, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/facturas/{id}", method = RequestMethod.GET)
-    public ResponseEntity<?> getFactura(@AuthenticationPrincipal CustomUser user, @PathVariable("id") long id) {
+	@RequestMapping(value = "/facturas/{uid}", method = RequestMethod.GET)
+    public ResponseEntity<?> getFactura(@AuthenticationPrincipal CustomUser user, @PathVariable("uid") String uid) {
 		
 		logger.info("Usuario [{}]", user.toString());
 		
-        logger.info("Recuperando factura con id [{}] del usuario [{}]", id, user.getUsuario().getEmail());
-        Optional<Invoice> factura = invoiceRepository.findByIdByUsuario(id, user.getUsuario());
+        logger.info("Recuperando factura con id [{}] del usuario [{}]", uid, user.getUsuario().getEmail());
+        Optional<Invoice> factura = invoiceRepository.findByUidByUsuario(uid, user.getUsuario());
         if (!factura.isPresent()) {
-            logger.error("Factura con id {} NO encontrada.", id);
+            logger.error("Factura con uid {} NO encontrada.", uid);
 			Map<String, Object> json = new HashMap<String, Object>();
 			json.put("responseCode", HttpStatus.BAD_REQUEST.value());
-			json.put("message", String.format("User [%s] Invoice [%s] NOT FOUND!", user.getUsuario().getEmail(), id));
-            return new ResponseEntity<Map<String, Object>>(json, HttpStatus.NOT_FOUND);
+			json.put("message", String.format("User [%s] Invoice [%s] NOT FOUND!", user.getUsuario().getEmail(), uid));
+            return new ResponseEntity<Map<String, Object>>(json, HttpStatus.OK);
         }
         return new ResponseEntity<Invoice>(factura.get(), HttpStatus.OK);
     }
@@ -131,7 +131,7 @@ public class FacturaResource {
         invoice.setUid(factura.getUidfactura());
 
         invoice.setTaxIdentificationNumber(factura.getSeller());
-        invoice.setCorporateName("");
+        invoice.setCorporateName(factura.getCorporateName());
 
         invoice.setInvoiceNumber(factura.getInvoicenumber());
         invoice.setInvoiceTotal(factura.getTotal());
@@ -159,7 +159,7 @@ public class FacturaResource {
 		InvoiceData invoiceData = new InvoiceData();
 		invoiceData.setF1(factura.getUidfactura());
 		invoiceData.setF2(factura.getSeller());
-		invoiceData.setF3("");
+		invoiceData.setF3(factura.getCorporateName());
 		invoiceData.setF4(factura.getInvoicenumber());
 		
 		invoiceData.setF5(factura.getTotal());

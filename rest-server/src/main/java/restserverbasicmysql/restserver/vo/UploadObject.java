@@ -12,6 +12,9 @@ public class UploadObject {
     @JsonProperty("tax_identification_number")
     private String taxIdentificationNumber;
     
+    @JsonProperty("corporate_name")
+    private String corporateName;
+    
     private String total;
     
     @JsonProperty("total_gross_amount")
@@ -48,6 +51,12 @@ public class UploadObject {
 	}
 	public void setSeller(String seller) {
 		this.taxIdentificationNumber = seller;
+	}
+	public String getCorporateName() {
+		return corporateName;
+	}
+	public void setCorporateName(String corporateName) {
+		this.corporateName = corporateName;
 	}
 	public String getTotal() {
 		return total;
@@ -94,15 +103,12 @@ public class UploadObject {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("UploadObject [UIDFactura=").append(uidfactura)
-		.append(", invoiceNumber=").append(invoiceNumber)
-				.append(", taxIdentificationNumber=").append(taxIdentificationNumber)
-				.append(", total=").append(total)
-				.append(", totalTaxOutputs=").append(totalTaxOutputs)
-				.append(", data=").append(issueData)
-				.append(", file=").append(file)
-				.append(", iv=").append(iv)
-				.append(", key=").append(key).append("]");
+		builder.append("UploadObject [\nuidfactura=").append(uidfactura).append(", \ninvoiceNumber=")
+				.append(invoiceNumber).append(", \ntaxIdentificationNumber=").append(taxIdentificationNumber)
+				.append(", \ncorporateName=").append(corporateName).append(", \ntotal=").append(total)
+				.append(", \ntotalGrossAmount=").append(totalGrossAmount).append(", \ntotalTaxOutputs=")
+				.append(totalTaxOutputs).append(", \nissueData=").append(issueData).append(", \nfile=").append(file)
+				.append(", \niv=").append(iv).append(", \nkey=").append(key).append("\n]");
 		return builder.toString();
 	}
     

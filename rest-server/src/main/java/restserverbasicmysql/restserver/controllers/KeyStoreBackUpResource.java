@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import restserverbasicmysql.restserver.model.CustomUser;
 import restserverbasicmysql.restserver.model.KeyStoreBackUp;
 import restserverbasicmysql.restserver.repos.KeyStoreBackUpRepository;
+import restserverbasicmysql.restserver.util.TokenGenerator;
 import restserverbasicmysql.restserver.vo.UploadKeyStoreBackUpObject;
 
 @RestController
@@ -43,7 +44,7 @@ public class KeyStoreBackUpResource {
 		}
         
     }
-
+	
 	@RequestMapping(value = "/ksb", method = RequestMethod.POST)
     public ResponseEntity<?> post(
     		@AuthenticationPrincipal CustomUser user, 
@@ -83,6 +84,9 @@ public class KeyStoreBackUpResource {
         	logger.info("La KeyStore del usuario YA está en el sistema. Se actualiza!  [{}]", existing.getUsuario().getEmail());
         	existing.setKeystore(uploadObject.getEnc());
         	existing.setIv(uploadObject.getIv());
+        	String token = TokenGenerator.nextToken();
+			logger.info("Super token : [{}]", token);
+			existing.setToken(token);
         	KeyStoreBackUp updatedKeyStoreBackUp = keyStoreBackUpRepository.save(existing);
         	return new ResponseEntity<KeyStoreBackUp>(updatedKeyStoreBackUp, HttpStatus.OK);
         }else {
@@ -91,6 +95,9 @@ public class KeyStoreBackUpResource {
         	newKeyStoreBackUp.setIv(uploadObject.getIv());
         	newKeyStoreBackUp.setUsuario(user.getUsuario());
         	newKeyStoreBackUp.setCreationTime(null);
+        	String token = TokenGenerator.nextToken();
+			logger.info("Super token : [{}]", token);
+			newKeyStoreBackUp.setToken(token);
         	newKeyStoreBackUp = keyStoreBackUpRepository.save(newKeyStoreBackUp);
         	logger.info("Guardada la KeyStore  [{}]", newKeyStoreBackUp);
         	return new ResponseEntity<KeyStoreBackUp>(newKeyStoreBackUp, HttpStatus.OK);
