@@ -32,10 +32,10 @@ drop table if exists tfm.tbl_usuari;
 
 
 CREATE TABLE tfm.tbl_factura (
-  id bigint(20) NOT NULL AUTO_INCREMENT,
-  data_creacio datetime NOT NULL,
-  detall_factura longblob,
-  num_factura VARCHAR(255) DEFAULT NULL,
+  id 							bigint(20) NOT NULL AUTO_INCREMENT,
+  data_creacio 					datetime NOT NULL,
+  detall_factura 				longblob,
+  num_factura 					VARCHAR(255) DEFAULT NULL,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
@@ -46,10 +46,10 @@ CREATE TABLE tfm.tbl_factura (
 CREATE TABLE tfm.tbl_users (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   
-  user VARCHAR(25) NOT NULL,
-  pass VARCHAR(100) NOT NULL,
+  user 							VARCHAR(25) NOT NULL,
+  pass 							VARCHAR(100) NOT NULL,
   
-  creation_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  creation_time 				TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
   UNIQUE (user)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
@@ -60,16 +60,16 @@ CREATE TABLE tfm.tbl_users (
 
 
 CREATE TABLE tfm.tbl_usuari (
-  id bigint(20) NOT NULL AUTO_INCREMENT,
+  id 							bigint(20) NOT NULL AUTO_INCREMENT,
   
-  username VARCHAR(45) NOT NULL,
-  pass VARCHAR(255) NOT NULL,
-  certificate LONGTEXT,
-  email VARCHAR(255) NOT NULL,
-  enabled tinyint(1) NOT NULL DEFAULT '0',
-  comentaris LONGTEXT,
+  username 						VARCHAR(45) NOT NULL,
+  pass 							VARCHAR(255) NOT NULL,
+  certificate 					LONGTEXT,
+  email 						VARCHAR(255) NOT NULL,
+  enabled 						tinyint(1) NOT NULL DEFAULT '0',
+  comentaris 					LONGTEXT,
   
-  creation_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  creation_time 				TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   
   PRIMARY KEY (id),
   UNIQUE KEY username_UNIQUE (username),
@@ -79,12 +79,12 @@ CREATE TABLE tfm.tbl_usuari (
 
 
 CREATE TABLE tfm.tbl_role (
-  id bigint(20) NOT NULL AUTO_INCREMENT,
+  id 							bigint(20) NOT NULL AUTO_INCREMENT,
   
-  nom VARCHAR(255) NOT NULL,
-  comentaris LONGTEXT,
+  nom 							VARCHAR(255) NOT NULL,
+  comentaris 					LONGTEXT,
   
-  creation_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  creation_time 				TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
   UNIQUE KEY nom_UNIQUE (nom)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
@@ -94,8 +94,8 @@ CREATE TABLE tfm.tbl_role (
 CREATE TABLE tfm.tbl_usuari_role (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   
-  usuari_id bigint(20) NOT NULL,
-  role_id bigint(20) NOT NULL,
+  usuari_id 					bigint(20) NOT NULL,
+  role_id 						bigint(20) NOT NULL,
   
   creation_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
@@ -110,15 +110,15 @@ CREATE TABLE tfm.tbl_usuari_role (
 CREATE TABLE tfm.tbl_token (
   id bigint(20) NOT NULL AUTO_INCREMENT,
   
-  usuari_id bigint(20) NOT NULL,
-  token longtext NOT NULL,
+  usuari_id 					bigint(20) NOT NULL,
+  token 						longtext NOT NULL,
   
-  resum VARCHAR(32) not null,
+  resum 						VARCHAR(32) not null,
   
-  valid_from DATETIME not null,
-  valid_to datetime not null,
+  valid_from 					DATETIME not null,
+  valid_to 						datetime not null,
   
-  used tinyint(1) NOT NULL DEFAULT '0',
+  used 							tinyint(1) NOT NULL DEFAULT '0',
   
   creation_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
@@ -133,8 +133,8 @@ CREATE TABLE tfm.tbl_kkeys (
   
   usuari_id bigint(20) NOT NULL,
   
-  f VARCHAR(100) NOT NULL comment 'field',
-  k longtext     NOT NULL comment 'Encrypted Symmetric Key',
+  f 							VARCHAR(100) NOT NULL comment 'field',
+  k 							longtext     NOT NULL comment 'Encrypted Symmetric Key',
   
   creation_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
@@ -149,14 +149,14 @@ CREATE TABLE tfm.tbl_invoice_data (
   
   usuari_id bigint(20) NOT NULL,
   
-  f1 VARCHAR(100) NOT NULL comment 'UID',
-  f2 VARCHAR(255) NOT NULL comment 'Tax Identification Number',
-  f3 VARCHAR(255) NOT NULL comment 'Corporate Name',
-  f4 VARCHAR(255) NOT NULL comment 'Invoice Number',
-  f5 DOUBLE(15,4) default 0.0 comment 'Invoice Total',
-  f6 DOUBLE(15,4) default 0.0 comment 'Total Gross Amount',
-  f7 DOUBLE(15,4) default 0.0 comment 'Total Tax Outputs',
-  f8 VARCHAR(255) NOT NULL comment 'Issue Date',
+  f1 VARCHAR(100) 				NOT NULL comment 'UID',
+  f2 VARCHAR(255) 				NOT NULL comment 'Tax Identification Number',
+  f3 VARCHAR(255) 				NOT NULL comment 'Corporate Name',
+  f4 VARCHAR(255) 				NOT NULL comment 'Invoice Number',
+  f5 DOUBLE(15,4) 				default 0.0 comment 'Invoice Total',
+  f6 DOUBLE(15,4) 				default 0.0 comment 'Total Gross Amount',
+  f7 DOUBLE(15,4) 				default 0.0 comment 'Total Tax Outputs',
+  f8 VARCHAR(255) 				NOT NULL comment 'Issue Date',
   
   creation_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
@@ -171,10 +171,10 @@ CREATE TABLE tfm.tbl_back_up (
   
   usuari_id bigint(20) NOT NULL,
   
-  f1 VARCHAR(100) NOT NULL comment 'UID',
-  i longtext NOT NULL comment 'Initialization Vector',
-  k longtext NOT NULL comment 'Simmetric Key',
-  f longtext NOT NULL comment 'Encrypted Invoice File',
+  f1 							VARCHAR(100) NOT NULL comment 'UID',
+  i 							longtext NOT NULL comment 'Initialization Vector',
+  k 							longtext NOT NULL comment 'Simmetric Key',
+  f 							longtext NOT NULL comment 'Encrypted Invoice File',
   
   creation_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
@@ -280,6 +280,7 @@ CREATE TABLE tfm.tbl_keystore (
   usuari_id 					bigint(20) NOT NULL,
   iv 							LONGTEXT NOT NULL,
   keystore 						LONGTEXT NOT NULL,
+  token 						LONGTEXT NOT NULL,
   
   creation_time 				TIMESTAMP DEFAULT '0000-00-00 00:00:00',
   update_time 					TIMESTAMP NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
@@ -293,7 +294,7 @@ SELECT * FROM tfm.tbl_usuari;
 SELECT * FROM tfm.tbl_role;
 SELECT * FROM tfm.tbl_usuari_role;
 SELECT * FROM tfm.tbl_token;
-SELECT * FROM tfm.tbl_keystore;
+SELECT * FROM tfm.tbl_keystore ks;
 
 select * from tfm.tbl_factura;
 select * from tfm.tbl_invoice;
@@ -325,3 +326,5 @@ delete FROM tfm.tbl_keystore;
 delete from tfm.tbl_factura;
 delete from tfm.tbl_invoice;
 delete from tfm.tbl_invoice_data;
+
+delete df from tfm.tbl_invoice_data df where df.id = 7;
